@@ -1,4 +1,4 @@
-﻿# ============================================================================
+﻿﻿# ============================================================================
 #  Brave Free Origin (Brave Debullshitinator Pro) - Windows 图形界面中文版
 #  通过注册表应用 Brave 浏览器企业组策略，提供清晰的复选框配置界面。
 #  策略源自 brave/brave-core 及 Chromium 企业文档深度调研。
@@ -3482,6 +3482,8 @@ $btnClose = New-Object System.Windows.Forms.Button
 $btnClose.Text = '关闭'
 $btnClose.Size = New-Object System.Drawing.Size(95, 30)
 $btnClose.Location = New-Object System.Drawing.Point(315, 5)
+$btnClose.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $btnClose
 $btnClose.Add_Click({ $form.Close() })
 $utilityPanel.Controls.Add($btnClose)
 
@@ -3652,6 +3654,13 @@ $form.Controls.Add($script:LogBox)
 
 Update-SelectionSummary
 
+# ---- Form Closing & Cleanup ------------------------------------------------
+$form.Add_FormClosing({
+    if ($script:ScriptletScanTimer) { $script:ScriptletScanTimer.Stop() }
+    if ($script:ScriptletRenderTimer) { $script:ScriptletRenderTimer.Stop() }
+    if ($script:ScriptletFilterTimer) { $script:ScriptletFilterTimer.Stop() }
+})
+
 # ---- Startup ---------------------------------------------------------------
 $form.Add_Shown({
     Write-Log '已获得管理员权限运行 - 正常。'
@@ -3661,3 +3670,6 @@ $form.Add_Shown({
 })
 
 [void]$form.ShowDialog()
+$form.Dispose()
+[System.Windows.Forms.Application]::Exit()
+exit 0
