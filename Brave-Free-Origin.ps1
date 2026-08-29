@@ -1,7 +1,7 @@
-# ============================================================================
-#  Brave Debullshitinator Pro - GUI edition for Windows
-#  Applies Brave Browser group policies via the registry with a checkbox UI.
-#  Source policies researched from brave/brave-core and Chromium enterprise docs.
+﻿# ============================================================================
+#  Brave Free Origin (Brave Debullshitinator Pro) - Windows 图形界面中文版
+#  通过注册表应用 Brave 浏览器企业组策略，提供清晰的复选框配置界面。
+#  策略源自 brave/brave-core 及 Chromium 企业文档深度调研。
 # ============================================================================
 
 #region Elevation -------------------------------------------------------------
@@ -75,11 +75,11 @@ $script:ScriptletFilterTimer = $null
 $script:ScriptletCheckedKeys = @{}
 $script:SuppressScriptletStatusEvents = $false
 $script:ScriptletComponentNames = @{
-    'iodkpdagapdfkphljnddpjlldadblomo' = 'uBlock filters'
-    'adcocjohghhfpidemphmcmlmhnfgikei' = 'Brave Firstparty specific filters'
-    'cdbbhgbmjhfnhnmgeddbliobbofkgdhe' = 'EasyList Cookie'
-    'kihnoaefogbkmblfimmibknnmkllbhlf' = 'EasyPrivacy'
-    'flnkmpokemfpaajmiimmjeiandgoodgg' = 'AdGuard French'
+    'iodkpdagapdfkphljnddpjlldadblomo' = 'uBlock 过滤规则 (uBlock filters)'
+    'adcocjohghhfpidemphmcmlmhnfgikei' = 'Brave 第一方特定规则 (Brave Firstparty filters)'
+    'cdbbhgbmjhfnhnmgeddbliobbofkgdhe' = 'EasyList Cookie 规则'
+    'kihnoaefogbkmblfimmibknnmkllbhlf' = 'EasyPrivacy 隐私规则'
+    'flnkmpokemfpaajmiimmjeiandgoodgg' = 'AdGuard 法语规则 (AdGuard French)'
 }
 
 function Get-DetectedChannels {
@@ -97,183 +97,181 @@ function Get-DetectedChannels {
 #              Recommended (true = tick by default in "Recommended" preset),
 #              MaxPrivacy (tick for "Maximum Privacy"), Description
 $script:Policies = [ordered]@{
-    'Brave Features' = @(
-        @{Name='HardwareAccelerationModeEnabled'; Type='DWORD'; ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Choices=([ordered]@{'Enable (1)'=1; 'Disable (0)'=0}); Description='GPU hardware acceleration. Enabled by default in every mode. Pick Disable (0) to fix GPU driver glitches, artifacts or crashes. Untick the box to leave Brave in control.'},
-        @{Name='BraveRewardsDisabled';         Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Brave Rewards (BAT ads/tips) and hide all Rewards UI.'},
-        @{Name='BraveWalletDisabled';          Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the built-in crypto wallet (ETH/BTC/SOL/FIL/ZEC).'},
-        @{Name='BraveVPNDisabled';             Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Brave VPN integration and all VPN UI.'},
-        @{Name='BraveAIChatEnabled';           Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Leo AI Chat assistant.'},
-        @{Name='BraveNewsDisabled';            Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Brave News feed on the new tab page.'},
-        @{Name='BraveTalkDisabled';            Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Brave Talk (Jitsi-based video calls).'},
-        @{Name='BraveWaybackMachineEnabled';   Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='Disable the "Check Wayback Machine" prompt on 404 pages.'},
-        @{Name='BravePlaylistEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Disable Playlist feature (save videos/audio).'},
-        @{Name='BraveSpeedreaderEnabled';      Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Disable Speedreader reading-mode feature.'},
-        @{Name='TorDisabled';                  Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$false; Description='Disable "Private Window with Tor". (Brave Tor is not recommended over real Tor Browser.)'},
-        @{Name='IPFSEnabled';                  Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable IPFS protocol support.'},
-        @{Name='WebTorrentDisabled';           Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable WebTorrent / magnet link integration.'}
+    'Brave 功能特性' = @(
+        @{Name='HardwareAccelerationModeEnabled'; Type='DWORD'; ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Choices=([ordered]@{'开启 (1)'=1; '关闭 (0)'=0}); Description='GPU 硬件加速。所有预设模式下默认开启。如果遇到 GPU 驱动异常、画面伪影或崩溃，可选择【关闭 (0)】。取消勾选则交由 Brave 自行管理。'},
+        @{Name='BraveRewardsDisabled';         Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Brave Rewards（BAT 广告/打赏）并隐藏所有 Rewards 界面元素。'},
+        @{Name='BraveWalletDisabled';          Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用内置加密钱包（ETH/BTC/SOL/FIL/ZEC 等）。'},
+        @{Name='BraveVPNDisabled';             Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Brave VPN 集成及所有 VPN 界面元素。'},
+        @{Name='BraveAIChatEnabled';           Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Leo AI 助手聊天功能。'},
+        @{Name='BraveNewsDisabled';            Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用新标签页上的 Brave News 新闻资讯流。'},
+        @{Name='BraveTalkDisabled';            Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Brave Talk（基于 Jitsi 的视频通话）。'},
+        @{Name='BraveWaybackMachineEnabled';   Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='禁用 404 页面上的【检查 Wayback Machine 网页时光机存档】提示。'},
+        @{Name='BravePlaylistEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='禁用播放列表（Playlist）功能（保存音视频）。'},
+        @{Name='BraveSpeedreaderEnabled';      Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='禁用 Speedreader 速读/阅读模式功能。'},
+        @{Name='TorDisabled';                  Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$false; Description='禁用【使用 Tor 的私密窗口】。（建议需要时使用真正的 Tor 浏览器，而非 Brave 内置 Tor。）'},
+        @{Name='IPFSEnabled';                  Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 IPFS 分布式协议支持。'},
+        @{Name='WebTorrentDisabled';           Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 WebTorrent / 磁力链接集成。'}
     )
-    'Privacy / Telemetry' = @(
-        @{Name='BraveP3AEnabled';                             Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable P3A privacy-preserving product analytics.'},
-        @{Name='BraveStatsPingEnabled';                       Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable anonymous daily/weekly/monthly usage ping.'},
-        @{Name='BraveWebDiscoveryEnabled';                    Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Web Discovery Project search index contribution.'},
-        @{Name='MetricsReportingEnabled';                     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Chromium UMA crash/usage metrics.'},
-        @{Name='BraveGlobalPrivacyControlEnabled';            Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Enable Sec-GPC "do not sell/share" signal. (Leave ON for privacy.)'},
-        @{Name='BraveReduceLanguageEnabled';                  Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Reduce language-preference fingerprinting. (Leave ON for privacy.)'},
-        @{Name='BraveTrackingQueryParametersFilteringEnabled';Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Strip tracking params (utm_, fbclid, etc.) from URLs. (Leave ON for privacy.)'},
-        @{Name='BraveDeAmpEnabled';                           Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Bypass Google AMP pages to reach publisher directly. (Leave ON for privacy.)'},
-        @{Name='BraveDebouncingEnabled';                      Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Protect against bounce-tracking redirect chains. (Leave ON for privacy.)'},
-        @{Name='DefaultBraveFingerprintingV2Setting';         Type='DWORD';  ApplyValue=3; Recommended=$true;  MaxPrivacy=$true;  Description='Set fingerprint protection to Standard (3). 1=Off.'},
-        @{Name='DefaultBraveAdblockSetting';                  Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Force default ad-blocking to Block (2). 1=Allow.'},
-        @{Name='DefaultBraveHttpsUpgradeSetting';             Type='DWORD';  ApplyValue=2; Recommended=$false; MaxPrivacy=$true;  Description='Force HTTPS upgrade to Strict (2). 3=Standard, 1=Disabled.'},
-        @{Name='DefaultBraveReferrersSetting';                Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Cap cross-site referrers to strict-origin-when-cross-origin (2).'},
-        @{Name='DefaultBraveRemember1PStorageSetting';        Type='DWORD';  ApplyValue=2; Recommended=$false; MaxPrivacy=$true;  Description='Forget first-party storage on tab close (2). 1=Remember.'},
-        @{Name='ChromeVariations';                            Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Opt out of all Chromium field trials/experiments (2). 1=critical only, 0=all.'},
-        @{Name='CloudReportingEnabled';                       Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable enterprise cloud reporting.'},
-        @{Name='UserFeedbackAllowed';                         Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the "Send feedback" UI that uploads diagnostics to Brave/Google.'}
+    '隐私与遥测' = @(
+        @{Name='BraveP3AEnabled';                             Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 P3A 隐私保护产品分析。'},
+        @{Name='BraveStatsPingEnabled';                       Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用每日/每周/每月的匿名使用情况 Ping 统计上报。'},
+        @{Name='BraveWebDiscoveryEnabled';                    Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Web Discovery Project 搜索索引贡献计划。'},
+        @{Name='MetricsReportingEnabled';                     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Chromium UMA 崩溃与使用情况统计上报。'},
+        @{Name='BraveGlobalPrivacyControlEnabled';            Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='启用 Sec-GPC【禁止出售/共享个人数据】信号。（为保护隐私建议保持开启。）'},
+        @{Name='BraveReduceLanguageEnabled';                  Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='减少语言偏好指纹追踪。（为保护隐私建议保持开启。）'},
+        @{Name='BraveTrackingQueryParametersFilteringEnabled';Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='从 URL 中自动剥离追踪参数（如 utm_、fbclid 等）。（为保护隐私建议保持开启。）'},
+        @{Name='BraveDeAmpEnabled';                           Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='绕过 Google AMP 页面，直接访问原始发布站点。（为保护隐私建议保持开启。）'},
+        @{Name='BraveDebouncingEnabled';                      Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='防护反弹追踪（Bounce Tracking）重定向链。（为保护隐私建议保持开启。）'},
+        @{Name='DefaultBraveFingerprintingV2Setting';         Type='DWORD';  ApplyValue=3; Recommended=$true;  MaxPrivacy=$true;  Description='将指纹防护设置为标准级别（3）。1 为关闭。'},
+        @{Name='DefaultBraveAdblockSetting';                  Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='将默认广告拦截设置为拦截（2）。1 为允许。'},
+        @{Name='DefaultBraveHttpsUpgradeSetting';             Type='DWORD';  ApplyValue=2; Recommended=$false; MaxPrivacy=$true;  Description='强制将 HTTPS 升级设置为严格模式（2）。3 为标准，1 为禁用。'},
+        @{Name='DefaultBraveReferrersSetting';                Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='将跨站 Referrer 限制为 strict-origin-when-cross-origin（2）。'},
+        @{Name='DefaultBraveRemember1PStorageSetting';        Type='DWORD';  ApplyValue=2; Recommended=$false; MaxPrivacy=$true;  Description='关闭标签页时清除第一方存储（2）。1 为保留。'},
+        @{Name='ChromeVariations';                            Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='退出所有 Chromium 线上试验/功能测试（2）。1 为仅限关键，0 为全部。'},
+        @{Name='CloudReportingEnabled';                       Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用企业云端报告。'},
+        @{Name='UserFeedbackAllowed';                         Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用向 Brave/Google 上传诊断信息的【发送反馈】功能。'}
     )
-    'Autofill / Passwords' = @(
-        @{Name='PasswordManagerEnabled';        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable built-in password manager (use Bitwarden / Proton Pass instead).'},
-        @{Name='PasswordLeakDetectionEnabled';  Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable leaked-credential check (avoids sending hashed pw to Google).'},
-        @{Name='AutofillAddressEnabled';        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable autofill of addresses / contact info.'},
-        @{Name='AutofillCreditCardEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable autofill of credit cards.'},
-        @{Name='PaymentMethodQueryEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Prevent sites from querying for saved payment methods.'},
-        @{Name='AutoplayAllowed';               Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='Block autoplaying media site-wide.'}
+    '自动填充与密码' = @(
+        @{Name='PasswordManagerEnabled';        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用内置密码管理器（建议改用 Bitwarden / 1Password / Proton Pass 等专业工具）。'},
+        @{Name='PasswordLeakDetectionEnabled';  Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用泄露凭据检测（避免将哈希密码发送至 Google 校验）。'},
+        @{Name='AutofillAddressEnabled';        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用地址与联系人信息的自动填充。'},
+        @{Name='AutofillCreditCardEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用信用卡信息的自动填充。'},
+        @{Name='PaymentMethodQueryEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='阻止网站查询您已保存的支付方式。'},
+        @{Name='AutoplayAllowed';               Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='在全站范围内阻止媒体自动播放。'}
     )
-    'Search / Suggestions' = @(
-        @{Name='SearchSuggestEnabled';                        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable search-engine autosuggest in the omnibox.'},
-        @{Name='UrlKeyedAnonymizedDataCollectionEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable "Make searches and browsing better" URL reporting.'},
-        @{Name='SpellCheckServiceEnabled';                    Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the enhanced (cloud) spellcheck service.'},
-        @{Name='SpellcheckEnabled';                           Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Disable local spellcheck entirely.'},
-        @{Name='TranslateEnabled';                            Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the "translate this page" Google prompt.'},
-        @{Name='AlternateErrorPagesEnabled';                  Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Google-hosted suggestion page on DNS errors.'}
+    '搜索与联想建议' = @(
+        @{Name='SearchSuggestEnabled';                        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用地址栏（Omnibox）中的搜索引擎自动联想建议。'},
+        @{Name='UrlKeyedAnonymizedDataCollectionEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用【改善搜索和浏览体验】的 URL 数据上报。'},
+        @{Name='SpellCheckServiceEnabled';                    Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用增强型（云端）拼写检查服务。'},
+        @{Name='SpellcheckEnabled';                           Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='彻底禁用本地拼写检查。'},
+        @{Name='TranslateEnabled';                            Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Google 的【翻译此页面】弹窗提示。'},
+        @{Name='AlternateErrorPagesEnabled';                  Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 DNS 解析错误时 Google 托管的建议页面。'}
     )
-    'Safety / Updates' = @(
-        @{Name='SafeBrowsingProtectionLevel';         Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$false; Description='Set Safe Browsing to Standard (1). 0=Off, 2=Enhanced (sends more to Google).'},
-        @{Name='SafeBrowsingExtendedReportingEnabled';Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable sending extra info to Google Safe Browsing.'},
-        @{Name='SafeBrowsingDeepScanningEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable uploading downloads to Google for deep scan.'},
-        @{Name='SafeBrowsingSurveysEnabled';          Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Safe Browsing user surveys.'},
-        @{Name='ComponentUpdatesEnabled';             Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Disable Chromium component updates (e.g. Widevine). Only tick if you know what this breaks.'},
-        @{Name='DefaultBrowserSettingEnabled';        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the "make default browser" prompt.'},
-        @{Name='ChromeCleanupEnabled';                Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the software-cleanup scanner (harmless on Brave).'},
-        @{Name='ChromeCleanupReportingEnabled';       Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable reporting from the cleanup scanner.'}
+    '安全与更新' = @(
+        @{Name='SafeBrowsingProtectionLevel';         Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$false; Description='将安全浏览（Safe Browsing）设置为标准模式（1）。0 为关闭，2 为增强模式（会上报更多数据至 Google）。'},
+        @{Name='SafeBrowsingExtendedReportingEnabled';Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用向 Google 安全浏览发送额外信息。'},
+        @{Name='SafeBrowsingDeepScanningEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用将下载文件上传至 Google 进行深度安全扫描。'},
+        @{Name='SafeBrowsingSurveysEnabled';          Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用安全浏览用户满意度调查。'},
+        @{Name='ComponentUpdatesEnabled';             Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='禁用 Chromium 组件更新（如 Widevine DRM）。仅在明确了解影响时勾选。'},
+        @{Name='DefaultBrowserSettingEnabled';        Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用【设为默认浏览器】的弹窗提示。'},
+        @{Name='ChromeCleanupEnabled';                Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用软件清理扫描器（Software Cleanup Scanner）。'},
+        @{Name='ChromeCleanupReportingEnabled';       Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用清理扫描器的结果上报。'}
     )
-    'AI / GenAI' = @(
-        @{Name='GenAiDefaultSettings';      Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Disable ALL upstream Chromium GenAI features (2).'},
-        @{Name='HelpMeWriteSettings';       Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Disable "Help me write" compose features.'},
-        @{Name='TabOrganizerSettings';      Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Disable AI Tab Organizer.'},
-        @{Name='CreateThemesSettings';      Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Disable AI-generated themes.'},
-        @{Name='HistorySearchSettings';     Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Disable AI-powered history search.'},
-        @{Name='DevToolsGenAiSettings';     Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Disable GenAI features inside DevTools.'}
+    'AI 与生成式 AI' = @(
+        @{Name='GenAiDefaultSettings';      Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁用所有上游 Chromium 生成式 AI（GenAI）功能（2）。'},
+        @{Name='HelpMeWriteSettings';       Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁用【帮我写作】（Help me write）撰写辅助功能。'},
+        @{Name='TabOrganizerSettings';      Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 AI 标签页整理器（Tab Organizer）。'},
+        @{Name='CreateThemesSettings';      Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 AI 主题生成功能。'},
+        @{Name='HistorySearchSettings';     Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 AI 历史记录搜索功能。'},
+        @{Name='DevToolsGenAiSettings';     Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁用开发者工具（DevTools）内部的 GenAI 功能。'}
     )
-    'Web Services / Background' = @(
-        @{Name='BackgroundModeEnabled';           Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Stop Brave from running in the background after window close.'},
-        @{Name='NetworkPredictionOptions';        Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='Never prefetch DNS/TCP/SSL (2). 0/1 = predict.'},
-        @{Name='CloudPrintSubmitEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable legacy cloud-print submissions.'},
-        @{Name='BuiltInDnsClientEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Use OS resolver instead of async DoH client. Only tick if you want OS DNS.'},
-        @{Name='DnsOverHttpsMode';                Type='STRING'; ApplyValue='automatic'; Recommended=$true;  MaxPrivacy=$true;  Description='Allow DoH ("automatic"). Set to "secure" to force, "off" to disable.'},
-        @{Name='WebRtcEventLogCollectionAllowed'; Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Block upload of WebRTC event logs to Google.'},
-        @{Name='SyncDisabled';                    Type='DWORD';  ApplyValue=1; Recommended=$false; MaxPrivacy=$true;  Description='Disable profile sync entirely.'},
-        @{Name='SigninAllowed';                   Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='Disable Google/Brave account sign-in.'},
-        @{Name='BrowserSignin';                   Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='Fully disable sign-in UI (0). 1=allow, 2=force.'},
-        @{Name='PromotionalTabsEnabled';          Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the welcome/promo new-tab content.'},
-        @{Name='WelcomePageOnOSUpgradeEnabled';   Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the "welcome back after OS upgrade" tab.'},
-        @{Name='ImportAutofillFormData';          Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Block autofill import on first run.'},
-        @{Name='ImportBookmarks';                 Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='Block bookmark import prompt on first run.'},
-        @{Name='ImportHistory';                   Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Block history import on first run.'},
-        @{Name='ImportSavedPasswords';            Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Block password import on first run.'},
-        @{Name='ImportSearchEngine';              Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='Block search-engine import on first run.'}
+    '网络服务与后台' = @(
+        @{Name='BackgroundModeEnabled';           Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='关闭窗口后阻止 Brave 继续在后台运行进程。'},
+        @{Name='NetworkPredictionOptions';        Type='DWORD';  ApplyValue=2; Recommended=$true;  MaxPrivacy=$true;  Description='禁止预读取 DNS/TCP/SSL 连接（2）。0/1 为预测预取。'},
+        @{Name='CloudPrintSubmitEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用已废弃的云打印（Cloud Print）提交功能。'},
+        @{Name='BuiltInDnsClientEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='使用系统原生 DNS 解析器而非异步 DoH 客户端。仅在需要系统 DNS 时勾选。'},
+        @{Name='DnsOverHttpsMode';                Type='STRING'; ApplyValue='automatic'; Recommended=$true;  MaxPrivacy=$true;  Description='允许 DoH（"automatic" 自动模式）。设为 "secure" 为强制使用，"off" 为禁用。'},
+        @{Name='WebRtcEventLogCollectionAllowed'; Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='阻止将 WebRTC 事件日志上传至 Google。'},
+        @{Name='SyncDisabled';                    Type='DWORD';  ApplyValue=1; Recommended=$false; MaxPrivacy=$true;  Description='彻底禁用个人资料同步（Sync）功能。'},
+        @{Name='SigninAllowed';                   Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='禁用 Google/Brave 账户登录。'},
+        @{Name='BrowserSignin';                   Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='彻底禁用浏览器登录界面（0）。1 为允许，2 为强制。'},
+        @{Name='PromotionalTabsEnabled';          Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用新标签页上的欢迎与推广营销内容。'},
+        @{Name='WelcomePageOnOSUpgradeEnabled';   Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用系统升级后弹出的【欢迎回来】页面。'},
+        @{Name='ImportAutofillFormData';          Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='首次运行时阻止导入自动填充表单数据。'},
+        @{Name='ImportBookmarks';                 Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='首次运行时阻止书签导入提示。'},
+        @{Name='ImportHistory';                   Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='首次运行时阻止历史记录导入。'},
+        @{Name='ImportSavedPasswords';            Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='首次运行时阻止已保存密码导入。'},
+        @{Name='ImportSearchEngine';              Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$true;  Description='首次运行时阻止搜索引擎导入。'}
     )
-    'Performance / Startup' = @(
-        @{Name='QuicAllowed';                     Type='DWORD';  ApplyValue=1;          Recommended=$true;  MaxPrivacy=$true;  Description='Enable QUIC / HTTP/3 protocol. Faster TLS handshake, lower latency.'},
-        @{Name='HighEfficiencyModeEnabled';       Type='DWORD';  ApplyValue=1;          Recommended=$true;  MaxPrivacy=$true;  Description='Memory Saver: sleep inactive tabs to reclaim RAM/CPU.'},
-        @{Name='BatterySaverModeAvailability';    Type='DWORD';  ApplyValue=2;          Recommended=$true;  MaxPrivacy=$true;  Description='Allow Battery Saver on low battery (2). 1=always on unplugged, 0=disabled.'},
-        @{Name='MediaRouterEnabled';              Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='Disable Google Cast / Media Router. Stops background mDNS discovery and memory overhead.'},
-        @{Name='DiskCacheSize';                   Type='DWORD';  ApplyValue=262144000;  Recommended=$true;  MaxPrivacy=$false; Description='Cap disk cache at 250 MB (value in bytes). Prevents unbounded cache growth on SSDs.'},
-        @{Name='BrowserLabsEnabled';              Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='Hide the Labs / experimental features icon in the toolbar.'},
-        @{Name='RestoreOnStartup';                Type='DWORD';  ApplyValue=5;          Recommended=$true;  MaxPrivacy=$true;  Description='Open blank new-tab on launch (5). Faster than restoring last session (1).'},
-        @{Name='HomepageIsNewTabPage';            Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='Decouple home button from the bloated NTP.'},
-        @{Name='HomepageLocation';                Type='STRING'; ApplyValue='about:blank'; Recommended=$true;  MaxPrivacy=$true;  Description='Blank homepage = fastest possible startup.'},
-        @{Name='NewTabPageLocation';              Type='STRING'; ApplyValue='about:blank'; Recommended=$false; MaxPrivacy=$true;  Description='Force new tab page to about:blank. Kills all NTP bloat.'},
-        @{Name='NTPCustomBackgroundEnabled';      Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='Disable the custom new-tab-page background (stops wallpaper download).'},
-        @{Name='ShowHomeButton';                  Type='DWORD';  ApplyValue=0;          Recommended=$false; MaxPrivacy=$false; Description='Hide the Home button (tiny UI/render win).'}
+    '性能与启动' = @(
+        @{Name='QuicAllowed';                     Type='DWORD';  ApplyValue=1;          Recommended=$true;  MaxPrivacy=$true;  Description='启用 QUIC / HTTP/3 协议。加快 TLS 握手速度，降低延迟。'},
+        @{Name='HighEfficiencyModeEnabled';       Type='DWORD';  ApplyValue=1;          Recommended=$true;  MaxPrivacy=$true;  Description='内存节省模式：休眠闲置标签页以释放 RAM 内存和 CPU 资源。'},
+        @{Name='BatterySaverModeAvailability';    Type='DWORD';  ApplyValue=2;          Recommended=$true;  MaxPrivacy=$true;  Description='低电量时允许开启省电模式（2）。1 为未插电时常开，0 为禁用。'},
+        @{Name='MediaRouterEnabled';              Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Google Cast / Media Router。停止后台 mDNS 局域网发现并减少内存占用。'},
+        @{Name='DiskCacheSize';                   Type='DWORD';  ApplyValue=262144000;  Recommended=$true;  MaxPrivacy=$false; Description='将磁盘缓存上限限制为 250 MB（数值单位为字节）。防止 SSD 硬盘缓存无节制膨胀。'},
+        @{Name='BrowserLabsEnabled';              Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='隐藏工具栏中的 Labs / 实验性功能图标。'},
+        @{Name='RestoreOnStartup';                Type='DWORD';  ApplyValue=5;          Recommended=$true;  MaxPrivacy=$true;  Description='启动时打开空白新标签页（5）。比恢复上次会话（1）更快。'},
+        @{Name='HomepageIsNewTabPage';            Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='将主页按钮与庞大的新标签页（NTP）解绑。'},
+        @{Name='HomepageLocation';                Type='STRING'; ApplyValue='about:blank'; Recommended=$true;  MaxPrivacy=$true;  Description='空白主页（about:blank）= 最快的启动速度。'},
+        @{Name='NewTabPageLocation';              Type='STRING'; ApplyValue='about:blank'; Recommended=$false; MaxPrivacy=$true;  Description='强制将新标签页设为 about:blank。消除所有新标签页多余负担。'},
+        @{Name='NTPCustomBackgroundEnabled';      Type='DWORD';  ApplyValue=0;          Recommended=$true;  MaxPrivacy=$true;  Description='禁用新标签页自定义背景壁纸（停止壁纸下载网络开销）。'},
+        @{Name='ShowHomeButton';                  Type='DWORD';  ApplyValue=0;          Recommended=$false; MaxPrivacy=$false; Description='隐藏主页按钮（微小的界面渲染收益）。'}
     )
-    'UI Bloat / Extras' = @(
-        @{Name='LiveCaptionEnabled';              Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable Live Caption (stops background download of speech-recognition model).'},
-        @{Name='AccessibilityImageLabelsEnabled'; Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable cloud image-description service (sends images to Google).'},
-        @{Name='LensDesktopNTPSearchEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Hide Google Lens search box on new tab page.'},
-        @{Name='LensRegionSearchEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Disable right-click Google Lens region search.'},
-        @{Name='LensOverlaySettings';             Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='Disable the Lens overlay feature (1 = disabled).'},
-        @{Name='ReadingListEnabled';              Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='Remove the Reading List UI.'},
-        @{Name='PromptForDownloadLocation';       Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Auto-save to Downloads without prompting. Set 1 if you prefer prompts.'},
-        @{Name='BookmarkBarEnabled';              Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='Hide bookmark bar globally (small render win). Unticking lets user toggle.'}
+    '界面冗余与附加功能' = @(
+        @{Name='LiveCaptionEnabled';              Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用实时字幕（停止语音识别模型的后台自动下载）。'},
+        @{Name='AccessibilityImageLabelsEnabled'; Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用云端图片描述服务（避免将图片上传至 Google 分析）。'},
+        @{Name='LensDesktopNTPSearchEnabled';     Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='隐藏新标签页上的 Google Lens 智慧镜头搜索框。'},
+        @{Name='LensRegionSearchEnabled';         Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='禁用右键菜单中的 Google Lens 区域搜索。'},
+        @{Name='LensOverlaySettings';             Type='DWORD';  ApplyValue=1; Recommended=$true;  MaxPrivacy=$true;  Description='禁用 Google Lens 屏幕图层搜索功能（1 为禁用）。'},
+        @{Name='ReadingListEnabled';              Type='DWORD';  ApplyValue=0; Recommended=$true;  MaxPrivacy=$true;  Description='移除【阅读列表】界面。'},
+        @{Name='PromptForDownloadLocation';       Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='自动保存下载文件至【下载】目录且不再每次询问。如需每次询问请设为 1。'},
+        @{Name='BookmarkBarEnabled';              Type='DWORD';  ApplyValue=0; Recommended=$false; MaxPrivacy=$false; Description='全局隐藏书签栏（微小的渲染性能收益）。取消勾选则允许用户自由切换。'}
     )
 }
 
 $script:ScheduledTasks = @(
-    @{Name='BraveSoftwareUpdateTaskMachineCore'; Description='Hourly "core" update check launched by Brave Omaha.'},
-    @{Name='BraveSoftwareUpdateTaskMachineUA';   Description='The actual version-check/download task.'}
+    @{Name='BraveSoftwareUpdateTaskMachineCore'; Description='Brave Omaha 启动的每小时【核心】更新检查任务。'},
+    @{Name='BraveSoftwareUpdateTaskMachineUA';   Description='实际执行版本检查与安装包下载的更新任务。'}
 )
 
 $script:Services = @(
-    @{Name='brave';                   Description='Brave Update Service - main Omaha update service.'},
-    @{Name='bravem';                  Description='Brave Update Service (medium-integrity on-demand helper).'},
-    @{Name='BraveElevationService';   Description='Brave Elevation Service - helper used by Omaha for per-machine updates.'},
-    @{Name='BraveVPNService';         Description='Brave VPN Service (present only if VPN feature installed).'},
-    @{Name='BraveVpnWireguardService';Description='Brave VPN Wireguard Service (present only if VPN feature installed).'}
+    @{Name='brave';                   Description='Brave Update Service - 主要的 Omaha 更新服务。'},
+    @{Name='bravem';                  Description='Brave Update Service (medium-integrity) - 中等完整性按需辅助更新服务。'},
+    @{Name='BraveElevationService';   Description='Brave Elevation Service - Omaha 用于按设备更新的提权服务。'},
+    @{Name='BraveVPNService';         Description='Brave VPN Service（仅在安装了 VPN 功能时存在）。'},
+    @{Name='BraveVpnWireguardService';Description='Brave VPN Wireguard Service（仅在安装了 VPN 功能时存在）。'}
 )
 
-# ---- Hosts blocklist groups (v1.5) ------------------------------------------
-# DNS-level kill switch via the Windows hosts file. Conservative on purpose -
-# only the two safest groups are pre-ticked. Anything that could break browsing
-# or Brave updates is off by default with a warning label.
+# ---- Hosts 域名屏蔽分组 (v1.5) -----------------------------------------------
+# 通过 Windows hosts 文件实现 DNS 级别拦截。
 $script:HostsBlocks = @(
-    @{Name='Brave P3A telemetry';     Recommended=$true;  Domains=@('p3a.brave.com','p3a-creative.brave.com','p2a.brave.com','p2a-creative.brave.com');                Description='Privacy-preserving analytics endpoints. Pure telemetry, never user-facing. Safe to block.'},
-    @{Name='Brave Variations';        Recommended=$true;  Domains=@('variations.brave.com','go-updater.brave.com');                                                    Description='Field-trial / experiment config. Safe to block - matches ChromeVariations=2 policy.'},
-    @{Name='Brave Stats ping';        Recommended=$true;  Domains=@('laptop-updates.brave.com');                                                                       Description='Daily/weekly/monthly anonymous usage ping. Safe to block.'},
-    @{Name='Brave Rewards / BAT';     Recommended=$false; Domains=@('rewards.brave.com','grant.rewards.brave.com','creators.brave.com');                               Description='Brave Rewards (BAT) servers. Block ONLY if you do not use Rewards. Will break the feature if you turn it on later.'},
-    @{Name='Brave News CDN';          Recommended=$false; Domains=@('brave-today-cdn.brave.com','brave-today.brave.com');                                              Description='News content CDN. Block ONLY if you have disabled News - unblocking is needed if you ever re-enable it.'},
-    @{Name='Component Updates';       Recommended=$false; Domains=@('componentupdater.brave.com','brave-core-ext.s3.brave.com');                                       Description='WARNING: blocking this stops Widevine/CRX/iOS-style components from updating. Use only if ComponentUpdatesEnabled is also off.'},
-    @{Name='Web Discovery';           Recommended=$false; Domains=@('search.anonymous.brave.com','wdp.brave.com');                                                     Description='Web Discovery Project endpoints. Already covered by BraveWebDiscoveryEnabled policy; only useful if policy is bypassed.'}
+    @{Name='Brave P3A 遥测';           Recommended=$true;  Domains=@('p3a.brave.com','p3a-creative.brave.com','p2a.brave.com','p2a-creative.brave.com');                Description='隐私保护分析接口。纯后台遥测，非面向用户服务。可安全屏蔽。'},
+    @{Name='Brave 实验配置 (Variations)'; Recommended=$true;  Domains=@('variations.brave.com','go-updater.brave.com');                                                    Description='线上测试/功能实验配置。可安全屏蔽 - 对应 ChromeVariations=2 策略。'},
+    @{Name='Brave 使用统计 Ping';        Recommended=$true;  Domains=@('laptop-updates.brave.com');                                                                       Description='每日/每周/每月匿名使用情况 Ping 统计。可安全屏蔽。'},
+    @{Name='Brave Rewards / BAT 打赏'; Recommended=$false; Domains=@('rewards.brave.com','grant.rewards.brave.com','creators.brave.com');                               Description='Brave Rewards (BAT) 服务器。仅在您不使用 Rewards 时屏蔽。若日后开启该功能需先解除屏蔽。'},
+    @{Name='Brave News 新闻 CDN';        Recommended=$false; Domains=@('brave-today-cdn.brave.com','brave-today.brave.com');                                              Description='新闻内容 CDN。仅在您已禁用新闻资讯流时屏蔽 - 若重新开启新闻需先解除屏蔽。'},
+    @{Name='组件更新 (Component Updates)';Recommended=$false; Domains=@('componentupdater.brave.com','brave-core-ext.s3.brave.com');                                       Description='【警告】屏蔽此项将阻止 Widevine DRM/CRX 等组件更新。仅在 ComponentUpdatesEnabled 同样关闭时使用。'},
+    @{Name='网络探索 (Web Discovery)';    Recommended=$false; Domains=@('search.anonymous.brave.com','wdp.brave.com');                                                     Description='Web Discovery Project 接口。已由 BraveWebDiscoveryEnabled 策略覆盖；仅在策略被绕过时起效。'}
 )
 $script:HostsSentinelStart = '# === Brave-Free-Origin START - managed block, do not edit between sentinels ==='
 $script:HostsSentinelEnd   = '# === Brave-Free-Origin END ==='
 $script:HostsFile = "$env:WINDIR\System32\drivers\etc\hosts"
 
-# ---- Search engines (v1.6) -------------------------------------------------
-# Used for the optional "force default search engine via policy" feature.
-# {searchTerms} is the standard Chromium placeholder Brave fills in.
+# ---- 搜索引擎配置 (v1.6) ----------------------------------------------------
 $script:SearchEngines = [ordered]@{
-    'Brave Search'   = @{ URL='https://search.brave.com/search?q={searchTerms}';     Suggest='https://search.brave.com/api/suggest?q={searchTerms}';                       Keyword='brave';     Home='https://search.brave.com' }
-    'DuckDuckGo'     = @{ URL='https://duckduckgo.com/?q={searchTerms}';             Suggest='https://duckduckgo.com/ac/?q={searchTerms}&type=list';                      Keyword='ddg';       Home='https://duckduckgo.com' }
-    'Startpage'      = @{ URL='https://www.startpage.com/do/search?q={searchTerms}';  Suggest='';                                                                          Keyword='startpage'; Home='https://www.startpage.com' }
-    'Qwant'          = @{ URL='https://www.qwant.com/?q={searchTerms}';               Suggest='https://api.qwant.com/api/suggest?q={searchTerms}';                         Keyword='qwant';     Home='https://www.qwant.com' }
-    'Ecosia'         = @{ URL='https://www.ecosia.org/search?q={searchTerms}';        Suggest='https://ac.ecosia.org/?q={searchTerms}';                                    Keyword='ecosia';    Home='https://www.ecosia.org' }
-    'Mojeek'         = @{ URL='https://www.mojeek.com/search?q={searchTerms}';        Suggest='';                                                                          Keyword='mojeek';    Home='https://www.mojeek.com' }
-    'Kagi (paid)'    = @{ URL='https://kagi.com/search?q={searchTerms}';              Suggest='https://kagi.com/api/autosuggest?q={searchTerms}';                          Keyword='kagi';      Home='https://kagi.com' }
-    'Google'         = @{ URL='https://www.google.com/search?q={searchTerms}';        Suggest='https://www.google.com/complete/search?output=chrome&q={searchTerms}';     Keyword='google';    Home='https://www.google.com' }
-    'Bing'           = @{ URL='https://www.bing.com/search?q={searchTerms}';          Suggest='https://www.bing.com/osjson.aspx?query={searchTerms}';                      Keyword='bing';      Home='https://www.bing.com' }
-    'Yandex'         = @{ URL='https://yandex.com/search/?text={searchTerms}';        Suggest='https://suggest.yandex.com/suggest-ff.cgi?part={searchTerms}';             Keyword='yandex';    Home='https://yandex.com' }
-    'Custom...'      = @{ URL='';                                                     Suggest='';                                                                          Keyword='custom';    Home='';                                IsCustom=$true }
+    'Brave 搜索 (Brave Search)' = @{ URL='https://search.brave.com/search?q={searchTerms}';     Suggest='https://search.brave.com/api/suggest?q={searchTerms}';                       Keyword='brave';     Home='https://search.brave.com' }
+    '百度 (Baidu)'              = @{ URL='https://www.baidu.com/s?wd={searchTerms}';             Suggest='https://suggestion.baidu.com/su?wd={searchTerms}&action=opensearch';        Keyword='baidu';     Home='https://www.baidu.com' }
+    '必应 (Bing)'               = @{ URL='https://www.bing.com/search?q={searchTerms}';          Suggest='https://www.bing.com/osjson.aspx?query={searchTerms}';                      Keyword='bing';      Home='https://www.bing.com' }
+    'Google'                    = @{ URL='https://www.google.com/search?q={searchTerms}';        Suggest='https://www.google.com/complete/search?output=chrome&q={searchTerms}';     Keyword='google';    Home='https://www.google.com' }
+    'DuckDuckGo'                = @{ URL='https://duckduckgo.com/?q={searchTerms}';             Suggest='https://duckduckgo.com/ac/?q={searchTerms}&type=list';                      Keyword='ddg';       Home='https://duckduckgo.com' }
+    'Startpage'                 = @{ URL='https://www.startpage.com/do/search?q={searchTerms}';  Suggest='';                                                                          Keyword='startpage'; Home='https://www.startpage.com' }
+    'Qwant'                     = @{ URL='https://www.qwant.com/?q={searchTerms}';               Suggest='https://api.qwant.com/api/suggest?q={searchTerms}';                         Keyword='qwant';     Home='https://www.qwant.com' }
+    'Ecosia'                    = @{ URL='https://www.ecosia.org/search?q={searchTerms}';        Suggest='https://ac.ecosia.org/?q={searchTerms}';                                    Keyword='ecosia';    Home='https://www.ecosia.org' }
+    'Mojeek'                    = @{ URL='https://www.mojeek.com/search?q={searchTerms}';        Suggest='';                                                                          Keyword='mojeek';    Home='https://www.mojeek.com' }
+    'Kagi (付费搜索)'            = @{ URL='https://kagi.com/search?q={searchTerms}';              Suggest='https://kagi.com/api/autosuggest?q={searchTerms}';                          Keyword='kagi';      Home='https://kagi.com' }
+    'Yandex'                    = @{ URL='https://yandex.com/search/?text={searchTerms}';        Suggest='https://suggest.yandex.com/suggest-ff.cgi?part={searchTerms}';             Keyword='yandex';    Home='https://yandex.com' }
+    '自定义 (Custom)...'        = @{ URL='';                                                     Suggest='';                                                                          Keyword='custom';    Home='';                                IsCustom=$true }
 }
 
-# Destination presets for "new tab" and "startup specific page" dropdowns.
-# Anything '__SEARCH__' resolves at apply-time to the chosen engine's home URL.
+# 新标签页与启动特定网页预设
 $script:DestinationOptions = [ordered]@{
-    'Blank page (about:blank)'                  = 'about:blank'
-    'Default new tab page (do not override)'    = '__SKIP__'
-    'Match the search engine I picked above'    = '__SEARCH__'
-    'Brave Search homepage'                     = 'https://search.brave.com'
-    'DuckDuckGo homepage'                       = 'https://duckduckgo.com'
-    'Google homepage'                           = 'https://www.google.com'
-    'Custom URL...'                             = '__CUSTOM__'
+    '空白页 (about:blank)'                      = 'about:blank'
+    '默认新标签页 (不覆盖)'                    = '__SKIP__'
+    '与上方选定的搜索引擎主页一致'              = '__SEARCH__'
+    'Brave Search 首页'                         = 'https://search.brave.com'
+    '百度首页 (Baidu)'                          = 'https://www.baidu.com'
+    '必应首页 (Bing)'                           = 'https://www.bing.com'
+    'Google 首页'                               = 'https://www.google.com'
+    'DuckDuckGo 首页'                           = 'https://duckduckgo.com'
+    '自定义网址 (Custom URL)...'                = '__CUSTOM__'
 }
 
-# Startup behavior modes (RestoreOnStartup policy values).
+# 启动行为模式 (RestoreOnStartup 策略值)
 $script:StartupModes = [ordered]@{
-    'Open the new tab page'        = @{ Code=5; UsesURL=$false }
-    'Restore my last session'      = @{ Code=1; UsesURL=$false }
-    'Open a blank page'            = @{ Code=4; UsesURL=$true; FixedURL='about:blank' }
-    'Open a specific page or set'  = @{ Code=4; UsesURL=$true; FixedURL=$null }
+    '打开新标签页'                  = @{ Code=5; UsesURL=$false }
+    '恢复上次打开的会话'            = @{ Code=1; UsesURL=$false }
+    '打开空白页 (about:blank)'      = @{ Code=4; UsesURL=$true; FixedURL='about:blank' }
+    '打开特定网页或一组网页'        = @{ Code=4; UsesURL=$true; FixedURL=$null }
 }
 #endregion
 
@@ -447,8 +445,8 @@ function Show-TextReport {
     $rf.Controls.Add($tb)
 
     $copy = New-Object System.Windows.Forms.Button
-    $copy.Text = 'Copy'
-    $copy.Size = New-Object System.Drawing.Size(90, 28)
+    $copy.Text = '复制 (Copy)'
+    $copy.Size = New-Object System.Drawing.Size(100, 28)
     $copy.Location = New-Object System.Drawing.Point(10, 8)
     $copy.Add_Click({
         [System.Windows.Forms.Clipboard]::SetText($tb.Text)
@@ -456,26 +454,26 @@ function Show-TextReport {
     $buttons.Controls.Add($copy)
 
     $save = New-Object System.Windows.Forms.Button
-    $save.Text = 'Save report'
-    $save.Size = New-Object System.Drawing.Size(110, 28)
-    $save.Location = New-Object System.Drawing.Point(110, 8)
+    $save.Text = '保存报告 (Save)'
+    $save.Size = New-Object System.Drawing.Size(115, 28)
+    $save.Location = New-Object System.Drawing.Point(118, 8)
     $save.Add_Click({
         $sfd = New-Object System.Windows.Forms.SaveFileDialog
-        $sfd.Filter = 'Text report (*.txt)|*.txt'
+        $sfd.Filter = '文本报告 (*.txt)|*.txt'
         $sfd.FileName = $DefaultFileName
         $sfd.InitialDirectory = Join-Path $env:USERPROFILE 'Documents\Brave-Free-Origin-Backups'
         if (-not (Test-Path $sfd.InitialDirectory)) { New-Item -ItemType Directory -Path $sfd.InitialDirectory | Out-Null }
         if ($sfd.ShowDialog() -eq 'OK') {
             Set-Content -Path $sfd.FileName -Value $tb.Text -Encoding UTF8
-            Write-Log "Report saved: $($sfd.FileName)" 'OK'
+            Write-Log "报告已保存: $($sfd.FileName)" 'OK'
         }
     })
     $buttons.Controls.Add($save)
 
     $close = New-Object System.Windows.Forms.Button
-    $close.Text = 'Close'
-    $close.Size = New-Object System.Drawing.Size(90, 28)
-    $close.Location = New-Object System.Drawing.Point(230, 8)
+    $close.Text = '关闭 (Close)'
+    $close.Size = New-Object System.Drawing.Size(100, 28)
+    $close.Location = New-Object System.Drawing.Point(240, 8)
     $close.Add_Click({ $rf.Close() })
     $buttons.Controls.Add($close)
 
@@ -613,22 +611,22 @@ function New-HostsPlanReport {
     $toRemove = @($current | Where-Object { $desired -notcontains $_ })
 
     $report = New-Object System.Text.StringBuilder
-    [void]$report.AppendLine('Brave Free Origin hosts preview')
-    [void]$report.AppendLine("Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
-    [void]$report.AppendLine("File: $($script:HostsFile)")
+    [void]$report.AppendLine('Brave Free Origin Hosts 域名屏蔽预览')
+    [void]$report.AppendLine("生成时间: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
+    [void]$report.AppendLine("目标文件: $($script:HostsFile)")
     [void]$report.AppendLine('')
-    [void]$report.AppendLine("Selected groups: $(@($script:HostsCheckBoxes | Where-Object { $_.Checked }).Count)")
-    [void]$report.AppendLine("Current managed domains: $($current.Count)")
-    [void]$report.AppendLine("Desired managed domains: $($desired.Count)")
+    [void]$report.AppendLine("已选中分组数: $(@($script:HostsCheckBoxes | Where-Object { $_.Checked }).Count)")
+    [void]$report.AppendLine("当前托管域名数: $($current.Count)")
+    [void]$report.AppendLine("目标托管域名数: $($desired.Count)")
     [void]$report.AppendLine('')
-    [void]$report.AppendLine("Add: $($toAdd.Count)")
+    [void]$report.AppendLine("新增屏蔽 (Add): $($toAdd.Count)")
     foreach ($d in $toAdd) { [void]$report.AppendLine("  + $d") }
-    [void]$report.AppendLine("Keep: $($toKeep.Count)")
+    [void]$report.AppendLine("保持现状 (Keep): $($toKeep.Count)")
     foreach ($d in $toKeep) { [void]$report.AppendLine("  = $d") }
-    [void]$report.AppendLine("Remove from managed block: $($toRemove.Count)")
+    [void]$report.AppendLine("从托管块移除 (Remove): $($toRemove.Count)")
     foreach ($d in $toRemove) { [void]$report.AppendLine("  - $d") }
     [void]$report.AppendLine('')
-    [void]$report.AppendLine('No other hosts entries are touched. The GUI only replaces the Brave-Free-Origin sentinel block.')
+    [void]$report.AppendLine('说明：不会修改系统 hosts 中的其他任何自定义条目。本工具仅维护 Brave-Free-Origin 专属标记块。')
     return $report.ToString()
 }
 
@@ -637,13 +635,13 @@ function New-ApplyPlanReport {
     $modeKey = if ([string]::IsNullOrWhiteSpace($script:ActiveProfile)) { 'Custom' } else { $script:ActiveProfile }
     $modeLabel = if ($script:ProfileDisplayNames.ContainsKey($modeKey)) { $script:ProfileDisplayNames[$modeKey] } else { $modeKey }
 
-    [void]$report.AppendLine('Brave Free Origin apply preview')
-    [void]$report.AppendLine("Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
-    [void]$report.AppendLine("Mode: $modeLabel")
-    [void]$report.AppendLine("Target channel(s): $($script:TargetChannels -join ', ')")
-    [void]$report.AppendLine("Backup before apply: $($chkBackup.Checked)")
+    [void]$report.AppendLine('Brave Free Origin 策略应用预览报告')
+    [void]$report.AppendLine("生成时间: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
+    [void]$report.AppendLine("预设模式: $modeLabel")
+    [void]$report.AppendLine("目标版本频道: $($script:TargetChannels -join ', ')")
+    [void]$report.AppendLine("应用前备份: $($chkBackup.Checked)")
     [void]$report.AppendLine('')
-    [void]$report.AppendLine('This is a dry run. Nothing has been written.')
+    [void]$report.AppendLine('【注意】这是一次模拟运行（Dry Run）。尚未对系统注册表进行任何实际写入。')
     [void]$report.AppendLine('')
 
     foreach ($channel in $script:TargetChannels) {
@@ -670,7 +668,7 @@ function New-ApplyPlanReport {
                 $clears++
             }
         }
-        [void]$report.AppendLine("  Summary: $adds add, $changes change, $clears clear, $keeps already correct")
+        [void]$report.AppendLine("  统计: $adds 个新增, $changes 个修改, $clears 个清除, $keeps 个已正确")
         [void]$report.AppendLine('')
 
         try {
@@ -730,7 +728,7 @@ function New-ApplyPlanReport {
         [void]$report.AppendLine('')
     }
 
-    [void]$report.AppendLine('=== Scheduled tasks ===')
+    [void]$report.AppendLine('=== 计划任务 (Scheduled Tasks) ===')
     foreach ($cb in $script:TaskCheckBoxes) {
         $t = $cb.Tag
         $task = Get-ScheduledTask -TaskName $t.Name -ErrorAction SilentlyContinue
@@ -746,7 +744,7 @@ function New-ApplyPlanReport {
     }
     [void]$report.AppendLine('')
 
-    [void]$report.AppendLine('=== Services ===')
+    [void]$report.AppendLine('=== Windows 系统服务 (Services) ===')
     foreach ($cb in $script:ServiceCheckBoxes) {
         $s = $cb.Tag
         $svc = Get-Service -Name $s.Name -ErrorAction SilentlyContinue
@@ -762,9 +760,9 @@ function New-ApplyPlanReport {
     }
     [void]$report.AppendLine('')
 
-    [void]$report.AppendLine('=== Hosts blocklist ===')
-    [void]$report.AppendLine('Main Apply does not edit hosts. Use Preview hosts / Apply hosts blocks inside the Hosts tab.')
-    [void]$report.AppendLine("Selected hosts domains right now: $(@(Get-SelectedHostsDomains).Count)")
+    [void]$report.AppendLine('=== Hosts 域名屏蔽列表 ===')
+    [void]$report.AppendLine('说明：【应用到 Brave】主按钮不会修改 hosts。如需生效请在 Hosts 选项卡内点击【应用 Hosts 屏蔽】。')
+    [void]$report.AppendLine("当前勾选的 Hosts 屏蔽域名总数: $(@(Get-SelectedHostsDomains).Count)")
 
     return $report.ToString()
 }
@@ -991,8 +989,8 @@ function Backup-ScriptletFile {
 function Test-ScriptletAdvancedWriteAllowed {
     if (-not $script:ChkScriptletAdvanced -or -not $script:ChkScriptletAdvanced.Checked) {
         [System.Windows.Forms.MessageBox]::Show(
-            "Editing Brave's internal filter-list files is disabled.`r`n`r`nTick 'Advanced edit mode' in the Scriptlets tab first.",
-            'Scriptlet manager',
+            "编辑 Brave 内部过滤列表已被禁用。`r`n`r`n请先在【默认脚本规则】选项卡中勾选【高级编辑模式】。",
+            '脚本规则管理器',
             [System.Windows.Forms.MessageBoxButtons]::OK,
             [System.Windows.Forms.MessageBoxIcon]::Warning) | Out-Null
         return $false
@@ -1001,8 +999,8 @@ function Test-ScriptletAdvancedWriteAllowed {
     $braveProcesses = @(Get-Process -Name brave -ErrorAction SilentlyContinue)
     if ($braveProcesses.Count -gt 0) {
         $ans = [System.Windows.Forms.MessageBox]::Show(
-            "Brave is currently running ($($braveProcesses.Count) process(es)).`r`n`r`nClose Brave first if you want the safest patch. Continue anyway?",
-            'Scriptlet manager',
+            "检测到 Brave 浏览器当前正在运行（共 $($braveProcesses.Count) 个进程）。`r`n`r`n为确保安全修改，建议先关闭 Brave。是否仍要继续？",
+            '脚本规则管理器',
             [System.Windows.Forms.MessageBoxButtons]::YesNo,
             [System.Windows.Forms.MessageBoxIcon]::Warning)
         if ($ans -ne 'Yes') { return $false }
@@ -1634,7 +1632,7 @@ function Invoke-ScriptletScan {
 
 #region GUI Build -------------------------------------------------------------
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Brave Free Origin v1.11  -  the free answer to Brave Origin's paywalled minimal mode"
+$form.Text = "Brave Free Origin v1.11 - 免费解锁极简精简模式 (中文版)" 
 $form.Size = New-Object System.Drawing.Size(1180, 900)
 $form.StartPosition = 'CenterScreen'
 $form.MinimumSize = New-Object System.Drawing.Size(1080, 820)
@@ -1719,37 +1717,37 @@ $script:MaxPerformancePolicies = @(
     )
 ) | Select-Object -Unique
 $script:ProfileDisplayNames = @{
-    'Minimal'        = 'Quick Debloat'
-    'Recommended'    = 'Recommended'
-    'Origin'         = 'Origin Mode'
-    'Performance'    = 'Privacy + Boost'
-    'MaxPerformance' = 'Max Performance'
-    'MaxPrivacy'     = 'Max Privacy'
-    'None'           = 'Stock / None'
-    'CurrentState'   = 'Current State'
-    'Custom'         = 'Custom'
+    'Minimal'        = '快速轻度瘦身 (Quick Debloat)'
+    'Recommended'    = '推荐配置 (Recommended)'
+    'Origin'         = '极简 Origin 模式 (Origin Mode)'
+    'Performance'    = '隐私 + 提速 (Privacy + Boost)'
+    'MaxPerformance' = '极致性能模式 (Max Performance)'
+    'MaxPrivacy'     = '极致隐私模式 (Max Privacy)'
+    'None'           = '官方默认 / 清空 (Stock / None)'
+    'CurrentState'   = '当前系统状态 (Current State)'
+    'Custom'         = '自定义 (Custom)'
 }
 $script:ProfileDescriptions = @{
-    'Minimal'      = 'Quick debloat. Removes the loudest commercial extras without changing the whole browser.'
-    'Recommended'  = 'Balanced daily-driver setup. Good privacy, lighter UI, keeps core compatibility and media-friendly defaults.'
-    'Origin'       = 'Matches Brave Origin''s stripped-down idea from April 2026: off by default for Leo, Rewards, Wallet, VPN, News, Talk, Tor, Wayback, Web Discovery, and related stats.'
-    'Performance'  = 'Privacy + Boost. Origin-style debloat plus startup and latency tuning for a leaner browser during gaming, streaming, or music use.'
-    'MaxPerformance' = 'Full fusion mode: Origin Mode, Privacy + Boost, and the strong privacy set combined, plus a few extra UI trims. This is the closest thing to an all-in gamer build.'
-    'MaxPrivacy'   = 'Aggressive lockdown. Great for hard privacy, but it can disable sync, sign-in, imports, and Brave update services.'
-    'None'         = 'Stock behavior. Nothing selected, nothing will be enforced.'
-    'CurrentState' = 'Read from this PC. Shows what is already disabled right now.'
-    'Custom'       = 'Hand-picked mix. Use the tabs below to build your own Brave loadout.'
+    'Minimal'      = '快速轻度瘦身。移除最显眼的商业推广附加功能，而不大幅改变浏览器行为。'
+    'Recommended'  = '均衡的日常主力配置。兼顾优秀隐私保护与清爽界面，保持核心兼容性与媒体播放默认体验。'
+    'Origin'       = '对标 2026年4月 Brave Origin 的极简构想：默认关闭 Leo AI、Rewards、钱包、VPN、新闻、Talk、Tor、时光机、Web Discovery 及相关统计。'
+    'Performance'  = '隐私 + 提速。在 Origin 极简的基础上加入启动与延迟优化，适合在游戏、直播、音乐串流时使用更轻盈的浏览器。'
+    'MaxPerformance' = '全能融合模式：集成 Origin 极简、隐私提速与强力隐私策略，并进一步精简界面。最贴近极客与游戏玩家的全开优化配置。'
+    'MaxPrivacy'   = '强力锁定模式。提供极致隐私保护，但会禁用同步、登录、数据导入以及 Brave 更新服务。'
+    'None'         = '官方默认状态。未选择任何策略，不对浏览器做强制策略约束。'
+    'CurrentState' = '从本机注册表读取。展示当前系统上已生效的策略设置。'
+    'Custom'       = '自由定制。使用下方各选项卡勾选组装您专属的 Brave 优化方案。'
 }
 $script:ProfileRisks = @{
-    'Minimal'      = 'Low risk'
-    'Recommended'  = 'Low risk'
-    'Origin'       = 'Low risk'
-    'Performance'  = 'Medium risk'
-    'MaxPerformance' = 'High risk'
-    'MaxPrivacy'   = 'High risk'
-    'None'         = 'No changes'
-    'CurrentState' = 'Read only'
-    'Custom'       = 'Depends on your picks'
+    'Minimal'      = '低风险 (Low risk)'
+    'Recommended'  = '低风险 (Low risk)'
+    'Origin'       = '低风险 (Low risk)'
+    'Performance'  = '中风险 (Medium risk)'
+    'MaxPerformance' = '高风险 (High risk)'
+    'MaxPrivacy'   = '高风险 (High risk)'
+    'None'         = '无改动 (No changes)'
+    'CurrentState' = '仅读取 (Read only)'
+    'Custom'       = '取决于您的选择'
 }
 
 function Get-PresetPayload {
@@ -1757,10 +1755,10 @@ function Get-PresetPayload {
 
     # Hosts groups: only auto-tick a group when the corresponding feature is
     # ALSO disabled by policy in this preset. No orphan blocks.
-    $hostsAlwaysSafe   = @('Brave P3A telemetry','Brave Variations','Brave Stats ping','Web Discovery')
-    $hostsRewards      = @('Brave Rewards / BAT')
-    $hostsNews         = @('Brave News CDN')
-    $hostsComponents   = @('Component Updates')
+    $hostsAlwaysSafe   = @('Brave P3A 遥测','Brave 实验配置 (Variations)','Brave 使用统计 Ping','网络探索 (Web Discovery)')
+    $hostsRewards      = @('Brave Rewards / BAT 打赏')
+    $hostsNews         = @('Brave News 新闻 CDN')
+    $hostsComponents   = @('组件更新 (Component Updates)')
 
     switch ($Preset) {
         'Recommended' {
@@ -1837,10 +1835,10 @@ function Update-SelectionSummary {
     $modeKey = if ([string]::IsNullOrWhiteSpace($script:ActiveProfile)) { 'Custom' } else { $script:ActiveProfile }
     $modeLabel = if ($script:ProfileDisplayNames.ContainsKey($modeKey)) { $script:ProfileDisplayNames[$modeKey] } else { $modeKey }
 
-    $script:ModeLabel.Text = "Mode: $modeLabel"
-    $script:SelectionLabel.Text = "Policies: $($selectedPolicies.Count) / $($script:CheckBoxes.Count)"
-    $script:SystemLabel.Text = "System: $($selectedTasks.Count) tasks, $($selectedServices.Count) services"
-    $script:RiskLabel.Text = "Risk: $($script:ProfileRisks[$modeKey])"
+    $script:ModeLabel.Text = "当前模式: $modeLabel"
+    $script:SelectionLabel.Text = "策略: $($selectedPolicies.Count) / $($script:CheckBoxes.Count)"
+    $script:SystemLabel.Text = "系统: $($selectedTasks.Count) 任务, $($selectedServices.Count) 服务"
+    $script:RiskLabel.Text = "风险评估: $($script:ProfileRisks[$modeKey])"
     $script:ModeDescription.Text = $script:ProfileDescriptions[$modeKey]
 }
 
@@ -1895,7 +1893,7 @@ $titleLabel.AutoSize = $true
 $header.Controls.Add($titleLabel)
 
 $subLabel = New-Object System.Windows.Forms.Label
-$subLabel.Text = "Strip out the AI, crypto, VPN, promo junk, and background clutter Brave stuffed in, then tune it for a lighter desktop footprint."
+$subLabel.Text = "剔除 Brave 内置的 AI、加密钱包、VPN、推广资讯与后台干扰，打造更轻量、低占用的桌面浏览器。" 
 $subLabel.ForeColor = [System.Drawing.Color]::Gainsboro
 $subLabel.Font = New-Object System.Drawing.Font('Segoe UI', 9)
 $subLabel.Location = New-Object System.Drawing.Point(20, 43)
@@ -1903,7 +1901,7 @@ $subLabel.Size = New-Object System.Drawing.Size(760, 18)
 $header.Controls.Add($subLabel)
 
 $metaLabel = New-Object System.Windows.Forms.Label
-$metaLabel.Text = "Brave detected: $braveVer"
+$metaLabel.Text = "已检测到 Brave 版本: $braveVer" 
 $metaLabel.ForeColor = [System.Drawing.Color]::LightSteelBlue
 $metaLabel.Font = New-Object System.Drawing.Font('Segoe UI', 8.5)
 $metaLabel.Location = New-Object System.Drawing.Point(20, 70)
@@ -1913,7 +1911,7 @@ $header.Controls.Add($metaLabel)
 # Channel selector (multi-channel support)
 $detectedChannels = Get-DetectedChannels
 $channelLabel = New-Object System.Windows.Forms.Label
-$channelLabel.Text = 'Target channel:'
+$channelLabel.Text = '目标版本频道:' 
 $channelLabel.ForeColor = [System.Drawing.Color]::LightSteelBlue
 $channelLabel.Font = New-Object System.Drawing.Font('Segoe UI', 8.5)
 $channelLabel.Location = New-Object System.Drawing.Point(310, 70)
@@ -1926,10 +1924,10 @@ $script:ChannelCombo.Size = New-Object System.Drawing.Size(220, 22)
 $script:ChannelCombo.DropDownStyle = 'DropDownList'
 $script:ChannelCombo.FlatStyle = 'Flat'
 foreach ($name in $script:Channels.Keys) {
-    $marker = if ($detectedChannels -contains $name) { '  (installed)' } else { '  (not installed)' }
+    $marker = if ($detectedChannels -contains $name) { '  (已安装)' } else { '  (未安装)' }
     [void]$script:ChannelCombo.Items.Add("$name$marker")
 }
-if ($detectedChannels.Count -gt 1) { [void]$script:ChannelCombo.Items.Add('All installed channels') }
+if ($detectedChannels.Count -gt 1) { [void]$script:ChannelCombo.Items.Add('所有已安装版本 (All installed)') }
 $script:ChannelCombo.SelectedIndex = 0
 $header.Controls.Add($script:ChannelCombo)
 
@@ -1943,7 +1941,7 @@ $header.Controls.Add($script:TargetPathLabel)
 
 $script:ChannelCombo.Add_SelectedIndexChanged({
     $sel = $script:ChannelCombo.SelectedItem.ToString()
-    if ($sel -eq 'All installed channels') {
+    if ($sel -eq '所有已安装版本 (All installed)') {
         $script:TargetChannels = Get-DetectedChannels
         if ($script:TargetChannels.Count -eq 0) { $script:TargetChannels = @('Stable') }
         $script:BravePolicyPath = $script:Channels[$script:TargetChannels[0]].Path
@@ -1958,7 +1956,7 @@ $script:ChannelCombo.Add_SelectedIndexChanged({
 })
 
 $originNote = New-Object System.Windows.Forms.Label
-$originNote.Text = 'Context: Brave described Origin on April 16, 2026 as a minimalist build, then put that stripped-down idea behind a paywall. This is the free local version.'
+$originNote.Text = '背景说明：Brave 于 2026 年 4 月公布了极简 Origin 模式构想并将其列为付费功能。本项目通过本地策略免费实现相同的效果。' 
 $originNote.ForeColor = [System.Drawing.Color]::FromArgb(255, 212, 153)
 $originNote.Font = New-Object System.Drawing.Font('Segoe UI', 8.5)
 $originNote.Location = New-Object System.Drawing.Point(20, 88)
@@ -1983,20 +1981,20 @@ $modePanel.BorderStyle = 'FixedSingle'
 $form.Controls.Add($modePanel)
 
 $modeIntro = New-Object System.Windows.Forms.Label
-$modeIntro.Text = 'Pick a one-click mode, then tweak the tabs below if you want to go deeper.'
+$modeIntro.Text = '点击上方一键预设模式，或在下方各选项卡中按需微调具体策略。' 
 $modeIntro.Location = New-Object System.Drawing.Point(14, 10)
 $modeIntro.Size = New-Object System.Drawing.Size(620, 18)
 $modeIntro.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9)
 $modePanel.Controls.Add($modeIntro)
 
 $buttonSpecs = @(
-    @{Text='Quick Debloat';   Mode='Minimal';        X=14;  Width=104; Color=[System.Drawing.Color]::FromArgb(235, 236, 240)},
-    @{Text='Recommended';     Mode='Recommended';    X=124; Width=104; Color=[System.Drawing.Color]::FromArgb(220, 238, 222)},
-    @{Text='Origin Mode';     Mode='Origin';         X=234; Width=104; Color=[System.Drawing.Color]::FromArgb(250, 232, 210)},
-    @{Text='Privacy + Boost'; Mode='Performance';    X=344; Width=108; Color=[System.Drawing.Color]::FromArgb(218, 231, 248)},
-    @{Text='Max Performance'; Mode='MaxPerformance'; X=458; Width=118; Color=[System.Drawing.Color]::FromArgb(255, 224, 224)},
-    @{Text='Max Privacy';     Mode='MaxPrivacy';     X=582; Width=100; Color=[System.Drawing.Color]::FromArgb(229, 220, 240)},
-    @{Text='Stock / None';    Mode='None';           X=688; Width=100; Color=[System.Drawing.Color]::FromArgb(241, 241, 241)}
+    @{Text='快速瘦身';   Mode='Minimal';        X=14;  Width=104; Color=[System.Drawing.Color]::FromArgb(235, 236, 240)},
+    @{Text='推荐配置';   Mode='Recommended';    X=124; Width=104; Color=[System.Drawing.Color]::FromArgb(220, 238, 222)},
+    @{Text='Origin 模式';Mode='Origin';         X=234; Width=104; Color=[System.Drawing.Color]::FromArgb(250, 232, 210)},
+    @{Text='隐私 + 提速';Mode='Performance';    X=344; Width=108; Color=[System.Drawing.Color]::FromArgb(218, 231, 248)},
+    @{Text='极致性能';   Mode='MaxPerformance'; X=458; Width=118; Color=[System.Drawing.Color]::FromArgb(255, 224, 224)},
+    @{Text='极致隐私';   Mode='MaxPrivacy';     X=582; Width=100; Color=[System.Drawing.Color]::FromArgb(229, 220, 240)},
+    @{Text='恢复默认';   Mode='None';           X=688; Width=100; Color=[System.Drawing.Color]::FromArgb(241, 241, 241)}
 )
 foreach ($spec in $buttonSpecs) {
     $btn = New-Object System.Windows.Forms.Button
@@ -2059,7 +2057,7 @@ foreach ($cat in $script:Policies.Keys) {
     $tab.BackColor = [System.Drawing.Color]::White
 
     $selAll = New-Object System.Windows.Forms.LinkLabel
-    $selAll.Text = 'Select all'
+    $selAll.Text = '全选 (Select all)'
     $selAll.Location = New-Object System.Drawing.Point(10, 8)
     $selAll.AutoSize = $true
     $selAll.Tag = $cat
@@ -2076,8 +2074,8 @@ foreach ($cat in $script:Policies.Keys) {
     $tab.Controls.Add($selAll)
 
     $selNone = New-Object System.Windows.Forms.LinkLabel
-    $selNone.Text = 'Select none'
-    $selNone.Location = New-Object System.Drawing.Point(90, 8)
+    $selNone.Text = '全不选 (Select none)'
+    $selNone.Location = New-Object System.Drawing.Point(140, 8)
     $selNone.AutoSize = $true
     $selNone.Tag = $cat
     $selNone.Add_LinkClicked({
@@ -2150,12 +2148,12 @@ foreach ($cat in $script:Policies.Keys) {
 
 # ---- System tab: scheduled tasks + services --------------------------------
 $sysTab = New-Object System.Windows.Forms.TabPage
-$sysTab.Text = 'System (Tasks / Services)'
+$sysTab.Text = '系统组件 (任务 / 服务)'
 $sysTab.AutoScroll = $true
 $sysTab.BackColor = [System.Drawing.Color]::White
 
 $sysIntro = New-Object System.Windows.Forms.Label
-$sysIntro.Text = "Background updaters matter most for the Privacy + Boost, Max Performance, and Max Privacy modes. Disabling services is the riskiest step because it can block Brave auto-updates."
+$sysIntro.Text = "后台更新程序主要影响 隐私+提速、极致性能 和 极致隐私 模式。禁用服务具有最高风险，因为这会阻止 Brave 自动更新。" 
 $sysIntro.Location = New-Object System.Drawing.Point(10, 8)
 $sysIntro.Size = New-Object System.Drawing.Size(1080, 30)
 $sysIntro.ForeColor = [System.Drawing.Color]::FromArgb(120, 50, 50)
@@ -2164,7 +2162,7 @@ $sysTab.Controls.Add($sysIntro)
 $script:TaskCheckBoxes = @()
 $y = 50
 $taskHdr = New-Object System.Windows.Forms.Label
-$taskHdr.Text = 'Scheduled Tasks'
+$taskHdr.Text = '计划任务 (Scheduled Tasks)'
 $taskHdr.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10)
 $taskHdr.Location = New-Object System.Drawing.Point(10, $y)
 $taskHdr.AutoSize = $true
@@ -2195,7 +2193,7 @@ foreach ($t in $script:ScheduledTasks) {
 $script:ServiceCheckBoxes = @()
 $y += 15
 $svcHdr = New-Object System.Windows.Forms.Label
-$svcHdr.Text = 'Windows Services'
+$svcHdr.Text = 'Windows 系统服务 (Windows Services)'
 $svcHdr.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10)
 $svcHdr.Location = New-Object System.Drawing.Point(10, $y)
 $svcHdr.AutoSize = $true
@@ -2229,19 +2227,19 @@ $tabs.TabPages.Add($sysTab)
 # Independent from the main Apply button - has its own Apply/Remove inside the tab.
 # Sentinel-tagged so revert is surgical. Auto-backs up hosts file before any write.
 $hostsTab = New-Object System.Windows.Forms.TabPage
-$hostsTab.Text = 'Hosts Blocklist (DNS-level)'
+$hostsTab.Text = 'Hosts 域名屏蔽 (DNS 级别)'
 $hostsTab.AutoScroll = $true
 $hostsTab.BackColor = [System.Drawing.Color]::White
 
 $hostsIntro = New-Object System.Windows.Forms.Label
-$hostsIntro.Text = "Optional second layer of defense: nullroute Brave telemetry domains in C:\Windows\System32\drivers\etc\hosts. Even if a policy is bypassed by an update, the network call still fails. Sentinel-tagged for clean revert. Backups land in Documents\Brave-Free-Origin-Backups."
+$hostsIntro.Text = "可选的第二道防线：在 C:\Windows\System32\drivers\etc\hosts 中将 Brave 遥测域名解析定向到 0.0.0.0。即使某次更新绕过了策略，网络请求也会直接失败。采用专属标记块确保干净回滚。备份保存在 Documents\Brave-Free-Origin-Backups 目录中。" 
 $hostsIntro.Location = New-Object System.Drawing.Point(10, 8)
 $hostsIntro.Size = New-Object System.Drawing.Size(1100, 36)
 $hostsIntro.ForeColor = [System.Drawing.Color]::FromArgb(70, 70, 90)
 $hostsTab.Controls.Add($hostsIntro)
 
 $hostsWarn = New-Object System.Windows.Forms.Label
-$hostsWarn.Text = 'Independent of the "Apply to Brave" button. Use the buttons in this tab to apply or remove the hosts block.'
+$hostsWarn.Text = '【注意】此功能独立于主界面的【应用到 Brave】按钮。请使用本选项卡内的按钮应用或清除 hosts 屏蔽规则。' 
 $hostsWarn.Location = New-Object System.Drawing.Point(10, 44)
 $hostsWarn.Size = New-Object System.Drawing.Size(1100, 18)
 $hostsWarn.ForeColor = [System.Drawing.Color]::FromArgb(160, 70, 30)
@@ -2252,7 +2250,7 @@ $script:HostsCheckBoxes = @()
 $y = 70
 foreach ($block in $script:HostsBlocks) {
     $cb = New-Object System.Windows.Forms.CheckBox
-    $cb.Text = "$($block.Name)  [$($block.Domains.Count) domain$(if($block.Domains.Count -ne 1){'s'})]"
+    $cb.Text = "$($block.Name)  [$($block.Domains.Count) 个域名]" 
     $cb.Location = New-Object System.Drawing.Point(15, $y)
     $cb.Size = New-Object System.Drawing.Size(360, 20)
     $cb.Font = New-Object System.Drawing.Font('Segoe UI', 9)
@@ -2282,7 +2280,7 @@ foreach ($block in $script:HostsBlocks) {
 }
 
 $btnApplyHosts = New-Object System.Windows.Forms.Button
-$btnApplyHosts.Text = 'Apply hosts blocks'
+$btnApplyHosts.Text = '应用 Hosts 屏蔽'
 $btnApplyHosts.Size = New-Object System.Drawing.Size(160, 30)
 $btnApplyHosts.Location = New-Object System.Drawing.Point(15, ($y + 10))
 $btnApplyHosts.BackColor = [System.Drawing.Color]::FromArgb(37, 99, 63)
@@ -2294,17 +2292,17 @@ $btnApplyHosts.Add_Click({
     }
     if ($domains.Count -eq 0) {
         $ans = [System.Windows.Forms.MessageBox]::Show(
-            'No groups ticked. This will remove the existing hosts block (if any). Continue?',
-            'Hosts blocklist', 'YesNo', 'Question')
+            '未勾选任何分组。这将移除现有的 hosts 屏蔽块（如果存在）。是否继续？',
+            'Hosts 域名屏蔽', 'YesNo', 'Question')
         if ($ans -ne 'Yes') { return }
     } else {
-        $msg = "About to add $($domains.Count) entries to:`r`n$($script:HostsFile)`r`n`r`nA timestamped backup will be saved first. Continue?"
-        $ans = [System.Windows.Forms.MessageBox]::Show($msg, 'Hosts blocklist', 'YesNo', 'Question')
+        $msg = "即将向以下文件写入 $($domains.Count) 条屏蔽条目：`r`n$($script:HostsFile)`r`n`r`n写入前将自动保存带时间戳的备份文件。是否继续？"
+        $ans = [System.Windows.Forms.MessageBox]::Show($msg, 'Hosts 域名屏蔽', 'YesNo', 'Question')
         if ($ans -ne 'Yes') { return }
     }
     try {
         Set-HostsBlockDomains -Domains $domains
-        [System.Windows.Forms.MessageBox]::Show("Hosts file updated. $($domains.Count) domain(s) blocked.`r`nDNS cache flushed.", 'Done', 'OK', 'Information') | Out-Null
+        [System.Windows.Forms.MessageBox]::Show("Hosts 文件已更新。已屏蔽 $($domains.Count) 个域名。`r`nDNS 缓存已成功刷新。", '完成', 'OK', 'Information') | Out-Null
     } catch {
         Write-Log "Hosts apply failed: $_" 'ERR'
         [System.Windows.Forms.MessageBox]::Show("Failed: $_", 'Error', 'OK', 'Error') | Out-Null
@@ -2313,18 +2311,18 @@ $btnApplyHosts.Add_Click({
 $hostsTab.Controls.Add($btnApplyHosts)
 
 $btnClearHosts = New-Object System.Windows.Forms.Button
-$btnClearHosts.Text = 'Remove hosts block'
+$btnClearHosts.Text = '清除 Hosts 屏蔽块'
 $btnClearHosts.Size = New-Object System.Drawing.Size(160, 30)
 $btnClearHosts.Location = New-Object System.Drawing.Point(185, ($y + 10))
 $btnClearHosts.Add_Click({
     $ans = [System.Windows.Forms.MessageBox]::Show(
-        "Remove the Brave-Free-Origin sentinel block from hosts?`r`n(Your other hosts entries are not touched.)",
-        'Hosts blocklist', 'YesNo', 'Warning')
+        "是否从 hosts 文件中移除 Brave-Free-Origin 专属屏蔽标记块？`r`n（您的其他 hosts 自定义条目不会受任何影响。）",
+        'Hosts 域名屏蔽', 'YesNo', 'Warning')
     if ($ans -ne 'Yes') { return }
     try {
         Clear-HostsBlock
         foreach ($cb in $script:HostsCheckBoxes) { $cb.Checked = $false }
-        [System.Windows.Forms.MessageBox]::Show('Sentinel block removed.', 'Done', 'OK', 'Information') | Out-Null
+        [System.Windows.Forms.MessageBox]::Show('专属屏蔽标记块已成功移除。', '完成', 'OK', 'Information') | Out-Null
     } catch {
         [System.Windows.Forms.MessageBox]::Show("Failed: $_", 'Error', 'OK', 'Error') | Out-Null
     }
@@ -2332,7 +2330,7 @@ $btnClearHosts.Add_Click({
 $hostsTab.Controls.Add($btnClearHosts)
 
 $btnLoadHosts = New-Object System.Windows.Forms.Button
-$btnLoadHosts.Text = 'Load current state'
+$btnLoadHosts.Text = '读取当前 Hosts 状态'
 $btnLoadHosts.Size = New-Object System.Drawing.Size(160, 30)
 $btnLoadHosts.Location = New-Object System.Drawing.Point(355, ($y + 10))
 $btnLoadHosts.Add_Click({
@@ -2348,7 +2346,7 @@ $btnLoadHosts.Add_Click({
 $hostsTab.Controls.Add($btnLoadHosts)
 
 $btnPreviewHosts = New-Object System.Windows.Forms.Button
-$btnPreviewHosts.Text = 'Preview hosts'
+$btnPreviewHosts.Text = '预览 Hosts 变更'
 $btnPreviewHosts.Size = New-Object System.Drawing.Size(130, 30)
 $btnPreviewHosts.Location = New-Object System.Drawing.Point(525, ($y + 10))
 $btnPreviewHosts.Add_Click({
@@ -2357,7 +2355,7 @@ $btnPreviewHosts.Add_Click({
 $hostsTab.Controls.Add($btnPreviewHosts)
 
 $btnOpenHosts = New-Object System.Windows.Forms.Button
-$btnOpenHosts.Text = 'Open hosts file'
+$btnOpenHosts.Text = '打开 hosts 文件'
 $btnOpenHosts.Size = New-Object System.Drawing.Size(140, 30)
 $btnOpenHosts.Location = New-Object System.Drawing.Point(665, ($y + 10))
 $btnOpenHosts.Add_Click({ Start-Process notepad.exe $script:HostsFile })
@@ -2370,19 +2368,19 @@ $tabs.TabPages.Add($hostsTab)
 # Scans Brave component filter lists, displays ##+js(...) rules, and can
 # comment/uncomment rules with a BFO marker after explicit user opt-in.
 $scriptletsTab = New-Object System.Windows.Forms.TabPage
-$scriptletsTab.Text = 'Default Scriptlets (Advanced)'
+$scriptletsTab.Text = '默认脚本规则 (高级)'
 $scriptletsTab.AutoScroll = $true
 $scriptletsTab.BackColor = [System.Drawing.Color]::White
 
 $scriptletIntro = New-Object System.Windows.Forms.Label
-$scriptletIntro.Text = "Optional advanced tool: view Brave's built-in adblock scriptlet rules from component filter lists. Editing is manual-only, never part of presets, and never triggered by Apply to Brave."
+$scriptletIntro.Text = "可选高级工具：查看 Brave 组件过滤列表中内置的广告拦截注入脚本规则 (##+js)。此处修改仅限手动执行，绝不包含在预设中，也绝不会被【应用到 Brave】触发。" 
 $scriptletIntro.Location = New-Object System.Drawing.Point(10, 8)
 $scriptletIntro.Size = New-Object System.Drawing.Size(1100, 34)
 $scriptletIntro.ForeColor = [System.Drawing.Color]::FromArgb(70, 70, 90)
 $scriptletsTab.Controls.Add($scriptletIntro)
 
 $scriptletRisk = New-Object System.Windows.Forms.Label
-$scriptletRisk.Text = "Risk: disabling scriptlets can break adblocking, anti-annoyance fixes, cookie banners, video sites, or site compatibility. Brave updates may replace component versions; export disabled preferences and reapply after updates if needed."
+$scriptletRisk.Text = "风险提示：禁用 scriptlet 脚本规则可能会破坏广告拦截、防烦人弹窗、Cookie 授权弹窗处理、视频网站功能或网站兼容性。Brave 更新可能会替换组件版本；如有需要可导出已禁用偏好并在更新后重新应用。" 
 $scriptletRisk.Location = New-Object System.Drawing.Point(10, 38)
 $scriptletRisk.Size = New-Object System.Drawing.Size(1100, 34)
 $scriptletRisk.ForeColor = [System.Drawing.Color]::FromArgb(160, 70, 30)
@@ -2390,7 +2388,7 @@ $scriptletRisk.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 8.5)
 $scriptletsTab.Controls.Add($scriptletRisk)
 
 $lblScriptletRoot = New-Object System.Windows.Forms.Label
-$lblScriptletRoot.Text = 'Brave User Data folder:'
+$lblScriptletRoot.Text = 'Brave 用户数据目录:'
 $lblScriptletRoot.Location = New-Object System.Drawing.Point(10, 80)
 $lblScriptletRoot.Size = New-Object System.Drawing.Size(145, 18)
 $scriptletsTab.Controls.Add($lblScriptletRoot)
@@ -2403,7 +2401,7 @@ $script:TxtScriptletRoot.Text = Get-ScriptletDefaultRoot
 $scriptletsTab.Controls.Add($script:TxtScriptletRoot)
 
 $btnScriptletAutoRoot = New-Object System.Windows.Forms.Button
-$btnScriptletAutoRoot.Text = 'Auto path'
+$btnScriptletAutoRoot.Text = '自动路径'
 $btnScriptletAutoRoot.Size = New-Object System.Drawing.Size(85, 26)
 $btnScriptletAutoRoot.Location = New-Object System.Drawing.Point(725, 74)
 $btnScriptletAutoRoot.Add_Click({
@@ -2413,7 +2411,7 @@ $btnScriptletAutoRoot.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletAutoRoot)
 
 $btnScriptletBrowse = New-Object System.Windows.Forms.Button
-$btnScriptletBrowse.Text = 'Browse...'
+$btnScriptletBrowse.Text = '浏览...'
 $btnScriptletBrowse.Size = New-Object System.Drawing.Size(85, 26)
 $btnScriptletBrowse.Location = New-Object System.Drawing.Point(815, 74)
 $btnScriptletBrowse.Add_Click({
@@ -2428,7 +2426,7 @@ $btnScriptletBrowse.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletBrowse)
 
 $script:BtnScriptletScan = New-Object System.Windows.Forms.Button
-$script:BtnScriptletScan.Text = 'Scan'
+$script:BtnScriptletScan.Text = '扫描'
 $script:BtnScriptletScan.Size = New-Object System.Drawing.Size(80, 26)
 $script:BtnScriptletScan.Location = New-Object System.Drawing.Point(905, 74)
 $script:BtnScriptletScan.BackColor = [System.Drawing.Color]::FromArgb(37, 99, 63)
@@ -2437,7 +2435,7 @@ $script:BtnScriptletScan.Add_Click({ Invoke-ScriptletScan })
 $scriptletsTab.Controls.Add($script:BtnScriptletScan)
 
 $btnScriptletOpenFolder = New-Object System.Windows.Forms.Button
-$btnScriptletOpenFolder.Text = 'Open folder'
+$btnScriptletOpenFolder.Text = '打开目录'
 $btnScriptletOpenFolder.Size = New-Object System.Drawing.Size(95, 26)
 $btnScriptletOpenFolder.Location = New-Object System.Drawing.Point(990, 74)
 $btnScriptletOpenFolder.Add_Click({
@@ -2447,7 +2445,7 @@ $btnScriptletOpenFolder.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletOpenFolder)
 
 $lblScriptletSearch = New-Object System.Windows.Forms.Label
-$lblScriptletSearch.Text = 'Search/filter:'
+$lblScriptletSearch.Text = '搜索/筛选:'
 $lblScriptletSearch.Location = New-Object System.Drawing.Point(10, 112)
 $lblScriptletSearch.Size = New-Object System.Drawing.Size(85, 18)
 $scriptletsTab.Controls.Add($lblScriptletSearch)
@@ -2474,7 +2472,7 @@ $script:ScriptletFilterTimer.Add_Tick({
 })
 
 $script:BtnScriptletFilter = New-Object System.Windows.Forms.Button
-$script:BtnScriptletFilter.Text = 'Filter'
+$script:BtnScriptletFilter.Text = '筛选'
 $script:BtnScriptletFilter.Size = New-Object System.Drawing.Size(75, 26)
 $script:BtnScriptletFilter.Location = New-Object System.Drawing.Point(465, 106)
 $script:BtnScriptletFilter.Add_Click({
@@ -2484,14 +2482,14 @@ $script:BtnScriptletFilter.Add_Click({
 $scriptletsTab.Controls.Add($script:BtnScriptletFilter)
 
 $script:ChkScriptletDisabledOnly = New-Object System.Windows.Forms.CheckBox
-$script:ChkScriptletDisabledOnly.Text = 'Show disabled by this app only'
+$script:ChkScriptletDisabledOnly.Text = '仅显示被本工具禁用的规则'
 $script:ChkScriptletDisabledOnly.Location = New-Object System.Drawing.Point(550, 110)
 $script:ChkScriptletDisabledOnly.Size = New-Object System.Drawing.Size(190, 20)
 $script:ChkScriptletDisabledOnly.Add_CheckedChanged({ Update-ScriptletListView })
 $scriptletsTab.Controls.Add($script:ChkScriptletDisabledOnly)
 
 $script:ChkScriptletAdvanced = New-Object System.Windows.Forms.CheckBox
-$script:ChkScriptletAdvanced.Text = 'Advanced edit mode (allow list.txt modifications)'
+$script:ChkScriptletAdvanced.Text = '高级编辑模式 (允许修改 list.txt 文件)'
 $script:ChkScriptletAdvanced.Location = New-Object System.Drawing.Point(755, 110)
 $script:ChkScriptletAdvanced.Size = New-Object System.Drawing.Size(330, 20)
 $script:ChkScriptletAdvanced.ForeColor = [System.Drawing.Color]::FromArgb(150, 60, 60)
@@ -2516,17 +2514,17 @@ $script:ScriptletList.Add_ItemChecked({
         Update-ScriptletStatusText
     }
 })
-[void]$script:ScriptletList.Columns.Add('Pick / status', 96)
-[void]$script:ScriptletList.Columns.Add('Domain', 190)
-[void]$script:ScriptletList.Columns.Add('Scriptlet', 190)
-[void]$script:ScriptletList.Columns.Add('Arguments', 260)
-[void]$script:ScriptletList.Columns.Add('Source / version', 180)
-[void]$script:ScriptletList.Columns.Add('Line', 55)
-[void]$script:ScriptletList.Columns.Add('Raw rule', 520)
+[void]$script:ScriptletList.Columns.Add('状态 (Status)', 105)
+[void]$script:ScriptletList.Columns.Add('域名 (Domain)', 180)
+[void]$script:ScriptletList.Columns.Add('脚本 (Scriptlet)', 190)
+[void]$script:ScriptletList.Columns.Add('参数 (Arguments)', 260)
+[void]$script:ScriptletList.Columns.Add('来源 / 版本', 180)
+[void]$script:ScriptletList.Columns.Add('行号', 55)
+[void]$script:ScriptletList.Columns.Add('原始规则 (Raw rule)', 520)
 $scriptletsTab.Controls.Add($script:ScriptletList)
 
 $script:LblScriptletStatus = New-Object System.Windows.Forms.Label
-$script:LblScriptletStatus.Text = 'Scan a Brave User Data folder to list internal scriptlet rules.'
+$script:LblScriptletStatus.Text = '点击【扫描】以分析 Brave 用户数据目录中的内置 scriptlet 脚本规则。'
 $script:LblScriptletStatus.Location = New-Object System.Drawing.Point(10, 336)
 $script:LblScriptletStatus.Size = New-Object System.Drawing.Size(520, 18)
 $script:LblScriptletStatus.ForeColor = [System.Drawing.Color]::DimGray
@@ -2543,7 +2541,7 @@ $script:ScriptletProgress.Anchor = 'Top, Left, Right'
 $scriptletsTab.Controls.Add($script:ScriptletProgress)
 
 $script:ChkScriptletAffectDuplicates = New-Object System.Windows.Forms.CheckBox
-$script:ChkScriptletAffectDuplicates.Text = 'Affect duplicate raw rules in the same file'
+$script:ChkScriptletAffectDuplicates.Text = '同时修改同文件中的重复原始规则'
 $script:ChkScriptletAffectDuplicates.Checked = $true
 $script:ChkScriptletAffectDuplicates.Location = New-Object System.Drawing.Point(10, 360)
 $script:ChkScriptletAffectDuplicates.Size = New-Object System.Drawing.Size(270, 20)
@@ -2551,7 +2549,7 @@ $tt.SetToolTip($script:ChkScriptletAffectDuplicates, 'Brave lists can contain th
 $scriptletsTab.Controls.Add($script:ChkScriptletAffectDuplicates)
 
 $script:BtnScriptletCheckVisible = New-Object System.Windows.Forms.Button
-$script:BtnScriptletCheckVisible.Text = 'Check filtered'
+$script:BtnScriptletCheckVisible.Text = '勾选当前筛选结果'
 $script:BtnScriptletCheckVisible.Size = New-Object System.Drawing.Size(125, 26)
 $script:BtnScriptletCheckVisible.Location = New-Object System.Drawing.Point(290, 356)
 $script:BtnScriptletCheckVisible.Add_Click({ Set-ScriptletVisibleChecks $true })
@@ -2559,14 +2557,14 @@ $tt.SetToolTip($script:BtnScriptletCheckVisible, 'Checks every row matching the 
 $scriptletsTab.Controls.Add($script:BtnScriptletCheckVisible)
 
 $script:BtnScriptletClearChecks = New-Object System.Windows.Forms.Button
-$script:BtnScriptletClearChecks.Text = 'Clear checks'
+$script:BtnScriptletClearChecks.Text = '清除所有勾选'
 $script:BtnScriptletClearChecks.Size = New-Object System.Drawing.Size(105, 26)
 $script:BtnScriptletClearChecks.Location = New-Object System.Drawing.Point(425, 356)
 $script:BtnScriptletClearChecks.Add_Click({ Set-ScriptletVisibleChecks $false })
 $scriptletsTab.Controls.Add($script:BtnScriptletClearChecks)
 
 $script:BtnScriptletDisable = New-Object System.Windows.Forms.Button
-$script:BtnScriptletDisable.Text = 'Disable checked'
+$script:BtnScriptletDisable.Text = '禁用已勾选规则'
 $script:BtnScriptletDisable.Size = New-Object System.Drawing.Size(125, 28)
 $script:BtnScriptletDisable.Location = New-Object System.Drawing.Point(10, 388)
 $script:BtnScriptletDisable.BackColor = [System.Drawing.Color]::FromArgb(150, 60, 60)
@@ -2593,7 +2591,7 @@ $script:BtnScriptletDisable.Add_Click({
 $scriptletsTab.Controls.Add($script:BtnScriptletDisable)
 
 $script:BtnScriptletEnable = New-Object System.Windows.Forms.Button
-$script:BtnScriptletEnable.Text = 'Enable checked'
+$script:BtnScriptletEnable.Text = '启用已勾选规则'
 $script:BtnScriptletEnable.Size = New-Object System.Drawing.Size(120, 28)
 $script:BtnScriptletEnable.Location = New-Object System.Drawing.Point(145, 388)
 $script:BtnScriptletEnable.Add_Click({
@@ -2612,7 +2610,7 @@ $script:BtnScriptletEnable.Add_Click({
 $scriptletsTab.Controls.Add($script:BtnScriptletEnable)
 
 $btnScriptletDetails = New-Object System.Windows.Forms.Button
-$btnScriptletDetails.Text = 'View selected'
+$btnScriptletDetails.Text = '查看选中规则详情'
 $btnScriptletDetails.Size = New-Object System.Drawing.Size(115, 28)
 $btnScriptletDetails.Location = New-Object System.Drawing.Point(275, 388)
 $btnScriptletDetails.Add_Click({
@@ -2635,7 +2633,7 @@ $btnScriptletDetails.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletDetails)
 
 $btnScriptletBackupAll = New-Object System.Windows.Forms.Button
-$btnScriptletBackupAll.Text = 'Backup all lists'
+$btnScriptletBackupAll.Text = '备份所有规则列表'
 $btnScriptletBackupAll.Size = New-Object System.Drawing.Size(120, 28)
 $btnScriptletBackupAll.Location = New-Object System.Drawing.Point(400, 388)
 $btnScriptletBackupAll.Add_Click({
@@ -2652,7 +2650,7 @@ $btnScriptletBackupAll.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletBackupAll)
 
 $btnScriptletRestoreSelected = New-Object System.Windows.Forms.Button
-$btnScriptletRestoreSelected.Text = 'Restore selected file'
+$btnScriptletRestoreSelected.Text = '从备份还原选中文件'
 $btnScriptletRestoreSelected.Size = New-Object System.Drawing.Size(145, 28)
 $btnScriptletRestoreSelected.Location = New-Object System.Drawing.Point(530, 388)
 $btnScriptletRestoreSelected.Add_Click({
@@ -2678,7 +2676,7 @@ $btnScriptletRestoreSelected.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletRestoreSelected)
 
 $btnScriptletRestoreAll = New-Object System.Windows.Forms.Button
-$btnScriptletRestoreAll.Text = 'Restore all backups'
+$btnScriptletRestoreAll.Text = '还原所有备份列表'
 $btnScriptletRestoreAll.Size = New-Object System.Drawing.Size(140, 28)
 $btnScriptletRestoreAll.Location = New-Object System.Drawing.Point(685, 388)
 $btnScriptletRestoreAll.Add_Click({
@@ -2701,7 +2699,7 @@ $btnScriptletRestoreAll.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletRestoreAll)
 
 $btnScriptletExportCsv = New-Object System.Windows.Forms.Button
-$btnScriptletExportCsv.Text = 'Export visible CSV'
+$btnScriptletExportCsv.Text = '导出可见规则为 CSV'
 $btnScriptletExportCsv.Size = New-Object System.Drawing.Size(130, 28)
 $btnScriptletExportCsv.Location = New-Object System.Drawing.Point(835, 388)
 $btnScriptletExportCsv.Add_Click({
@@ -2718,7 +2716,7 @@ $btnScriptletExportCsv.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletExportCsv)
 
 $btnScriptletExportPrefs = New-Object System.Windows.Forms.Button
-$btnScriptletExportPrefs.Text = 'Export disabled prefs'
+$btnScriptletExportPrefs.Text = '导出已禁用偏好'
 $btnScriptletExportPrefs.Size = New-Object System.Drawing.Size(150, 28)
 $btnScriptletExportPrefs.Location = New-Object System.Drawing.Point(10, 424)
 $btnScriptletExportPrefs.Add_Click({
@@ -2737,7 +2735,7 @@ $btnScriptletExportPrefs.Add_Click({
 $scriptletsTab.Controls.Add($btnScriptletExportPrefs)
 
 $script:BtnScriptletImportPrefs = New-Object System.Windows.Forms.Button
-$script:BtnScriptletImportPrefs.Text = 'Import + reapply prefs'
+$script:BtnScriptletImportPrefs.Text = '导入并重新应用偏好'
 $script:BtnScriptletImportPrefs.Size = New-Object System.Drawing.Size(165, 28)
 $script:BtnScriptletImportPrefs.Location = New-Object System.Drawing.Point(170, 424)
 $script:BtnScriptletImportPrefs.Add_Click({
@@ -2763,7 +2761,7 @@ $script:BtnScriptletImportPrefs.Add_Click({
 $scriptletsTab.Controls.Add($script:BtnScriptletImportPrefs)
 
 $scriptletFooter = New-Object System.Windows.Forms.Label
-$scriptletFooter.Text = 'Tip: if Scan finds nothing, use Browse and select the folder named "User Data" under your Brave profile. This feature edits component filter lists only when Advanced edit mode is ticked.'
+$scriptletFooter.Text = '提示：若扫描未发现规则，请使用【浏览...】选择 Brave 个人资料目录下的 User Data 文件夹。仅当勾选【高级编辑模式】时才允许修改。' 
 $scriptletFooter.Location = New-Object System.Drawing.Point(350, 429)
 $scriptletFooter.Size = New-Object System.Drawing.Size(760, 32)
 $scriptletFooter.ForeColor = [System.Drawing.Color]::DimGray
@@ -2777,12 +2775,12 @@ $tabs.TabPages.Add($scriptletsTab)
 # Off by default: Brave's user-chosen search engine and startup behavior stay
 # untouched unless the user actively ticks an override.
 $searchTab = New-Object System.Windows.Forms.TabPage
-$searchTab.Text = 'Search & Startup'
+$searchTab.Text = '搜索与启动设置'
 $searchTab.AutoScroll = $true
 $searchTab.BackColor = [System.Drawing.Color]::White
 
 $searchIntro = New-Object System.Windows.Forms.Label
-$searchIntro.Text = 'Pick the omnibox search engine and what opens when Brave launches / when you open a new tab. Each section is independent and only fires when its checkbox is ticked. Unticking + Apply removes the override.'
+$searchIntro.Text = '设置地址栏搜索引擎，以及在 Brave 启动或打开新标签页时显示的内容。每个版块彼此独立，仅在勾选对应启用框时生效。取消勾选并应用即可移除覆盖。' 
 $searchIntro.Location = New-Object System.Drawing.Point(10, 8)
 $searchIntro.Size = New-Object System.Drawing.Size(1100, 36)
 $searchIntro.ForeColor = [System.Drawing.Color]::FromArgb(70, 70, 90)
@@ -2790,21 +2788,21 @@ $searchTab.Controls.Add($searchIntro)
 
 # --- Section 1: Default search engine ---
 $secSearch = New-Object System.Windows.Forms.GroupBox
-$secSearch.Text = 'Default search engine (omnibox / address bar)'
+$secSearch.Text = '默认搜索引擎（地址栏 / Omnibox）'
 $secSearch.Location = New-Object System.Drawing.Point(10, 50)
 $secSearch.Size = New-Object System.Drawing.Size(1110, 110)
 $secSearch.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9)
 $searchTab.Controls.Add($secSearch)
 
 $script:ChkSearchOverride = New-Object System.Windows.Forms.CheckBox
-$script:ChkSearchOverride.Text = 'Force a default search engine (writes DefaultSearchProvider* policies)'
+$script:ChkSearchOverride.Text = '强制指定默认搜索引擎 (写入 DefaultSearchProvider* 策略)'
 $script:ChkSearchOverride.Location = New-Object System.Drawing.Point(15, 22)
 $script:ChkSearchOverride.Size = New-Object System.Drawing.Size(530, 20)
 $script:ChkSearchOverride.Font = New-Object System.Drawing.Font('Segoe UI', 9)
 $secSearch.Controls.Add($script:ChkSearchOverride)
 
 $lblEngine = New-Object System.Windows.Forms.Label
-$lblEngine.Text = 'Engine:'
+$lblEngine.Text = '搜索引擎:'
 $lblEngine.Location = New-Object System.Drawing.Point(35, 50)
 $lblEngine.Size = New-Object System.Drawing.Size(60, 18)
 $lblEngine.Font = New-Object System.Drawing.Font('Segoe UI', 9)
@@ -2819,7 +2817,7 @@ $script:CmbSearchEngine.SelectedIndex = 0
 $secSearch.Controls.Add($script:CmbSearchEngine)
 
 $lblCustomSearch = New-Object System.Windows.Forms.Label
-$lblCustomSearch.Text = 'Custom search URL:'
+$lblCustomSearch.Text = '自定义搜索 URL:'
 $lblCustomSearch.Location = New-Object System.Drawing.Point(310, 50)
 $lblCustomSearch.Size = New-Object System.Drawing.Size(115, 18)
 $lblCustomSearch.Font = New-Object System.Drawing.Font('Segoe UI', 9)
@@ -2833,7 +2831,7 @@ $script:TxtCustomSearchUrl.Enabled = $false
 $secSearch.Controls.Add($script:TxtCustomSearchUrl)
 
 $searchHelp = New-Object System.Windows.Forms.Label
-$searchHelp.Text = 'Custom must use {searchTerms} as the placeholder. Example: https://my-searx/search?q={searchTerms}'
+$searchHelp.Text = '自定义 URL 必须包含 {searchTerms} 作为搜索词占位符。示例：https://my-searx/search?q={searchTerms}' 
 $searchHelp.Location = New-Object System.Drawing.Point(35, 78)
 $searchHelp.Size = New-Object System.Drawing.Size(900, 18)
 $searchHelp.ForeColor = [System.Drawing.Color]::DimGray
@@ -2841,27 +2839,27 @@ $searchHelp.Font = New-Object System.Drawing.Font('Segoe UI', 8)
 $secSearch.Controls.Add($searchHelp)
 
 $script:CmbSearchEngine.Add_SelectedIndexChanged({
-    $isCustom = ($script:CmbSearchEngine.SelectedItem -eq 'Custom...')
+    $isCustom = ($script:CmbSearchEngine.SelectedItem -eq '自定义 (Custom)...')
     $script:TxtCustomSearchUrl.Enabled = $isCustom
 })
 
 # --- Section 2: New tab page ---
 $secNtp = New-Object System.Windows.Forms.GroupBox
-$secNtp.Text = 'New Tab Page'
+$secNtp.Text = '新标签页 (New Tab Page)'
 $secNtp.Location = New-Object System.Drawing.Point(10, 168)
 $secNtp.Size = New-Object System.Drawing.Size(1110, 90)
 $secNtp.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9)
 $searchTab.Controls.Add($secNtp)
 
 $script:ChkNtpOverride = New-Object System.Windows.Forms.CheckBox
-$script:ChkNtpOverride.Text = 'Override new tab page (writes NewTabPageLocation policy)'
+$script:ChkNtpOverride.Text = '覆盖新标签页 (写入 NewTabPageLocation 策略)'
 $script:ChkNtpOverride.Location = New-Object System.Drawing.Point(15, 22)
 $script:ChkNtpOverride.Size = New-Object System.Drawing.Size(450, 20)
 $script:ChkNtpOverride.Font = New-Object System.Drawing.Font('Segoe UI', 9)
 $secNtp.Controls.Add($script:ChkNtpOverride)
 
 $lblNtpDest = New-Object System.Windows.Forms.Label
-$lblNtpDest.Text = 'Open:'
+$lblNtpDest.Text = '打开页面:'
 $lblNtpDest.Location = New-Object System.Drawing.Point(35, 50)
 $lblNtpDest.Size = New-Object System.Drawing.Size(50, 18)
 $secNtp.Controls.Add($lblNtpDest)
@@ -2871,13 +2869,13 @@ $script:CmbNtpDest.Location = New-Object System.Drawing.Point(85, 47)
 $script:CmbNtpDest.Size = New-Object System.Drawing.Size(310, 22)
 $script:CmbNtpDest.DropDownStyle = 'DropDownList'
 foreach ($name in $script:DestinationOptions.Keys) {
-    if ($name -ne 'Default new tab page (do not override)') { [void]$script:CmbNtpDest.Items.Add($name) }
+    if ($name -ne '默认新标签页 (不覆盖)') { [void]$script:CmbNtpDest.Items.Add($name) }
 }
 $script:CmbNtpDest.SelectedIndex = 0
 $secNtp.Controls.Add($script:CmbNtpDest)
 
 $lblNtpCustom = New-Object System.Windows.Forms.Label
-$lblNtpCustom.Text = 'Custom URL:'
+$lblNtpCustom.Text = '自定义 URL:'
 $lblNtpCustom.Location = New-Object System.Drawing.Point(410, 50)
 $lblNtpCustom.Size = New-Object System.Drawing.Size(80, 18)
 $secNtp.Controls.Add($lblNtpCustom)
@@ -2890,27 +2888,27 @@ $script:TxtNtpCustomUrl.Enabled = $false
 $secNtp.Controls.Add($script:TxtNtpCustomUrl)
 
 $script:CmbNtpDest.Add_SelectedIndexChanged({
-    $isCustom = ($script:CmbNtpDest.SelectedItem -eq 'Custom URL...')
+    $isCustom = ($script:CmbNtpDest.SelectedItem -eq '自定义网址 (Custom URL)...')
     $script:TxtNtpCustomUrl.Enabled = $isCustom
 })
 
 # --- Section 3: Startup behavior ---
 $secStartup = New-Object System.Windows.Forms.GroupBox
-$secStartup.Text = 'Startup Behavior (what opens when you launch Brave)'
+$secStartup.Text = '启动行为 (启动 Brave 时打开的内容)'
 $secStartup.Location = New-Object System.Drawing.Point(10, 266)
 $secStartup.Size = New-Object System.Drawing.Size(1110, 110)
 $secStartup.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9)
 $searchTab.Controls.Add($secStartup)
 
 $script:ChkStartupOverride = New-Object System.Windows.Forms.CheckBox
-$script:ChkStartupOverride.Text = 'Override startup behavior (writes RestoreOnStartup + RestoreOnStartupURLs policies)'
+$script:ChkStartupOverride.Text = '覆盖启动行为 (写入 RestoreOnStartup 与 RestoreOnStartupURLs 策略)'
 $script:ChkStartupOverride.Location = New-Object System.Drawing.Point(15, 22)
 $script:ChkStartupOverride.Size = New-Object System.Drawing.Size(550, 20)
 $script:ChkStartupOverride.Font = New-Object System.Drawing.Font('Segoe UI', 9)
 $secStartup.Controls.Add($script:ChkStartupOverride)
 
 $lblStartMode = New-Object System.Windows.Forms.Label
-$lblStartMode.Text = 'Mode:'
+$lblStartMode.Text = '启动模式:'
 $lblStartMode.Location = New-Object System.Drawing.Point(35, 50)
 $lblStartMode.Size = New-Object System.Drawing.Size(50, 18)
 $secStartup.Controls.Add($lblStartMode)
@@ -2924,7 +2922,7 @@ $script:CmbStartupMode.SelectedIndex = 0
 $secStartup.Controls.Add($script:CmbStartupMode)
 
 $lblStartUrl = New-Object System.Windows.Forms.Label
-$lblStartUrl.Text = 'URL(s):'
+$lblStartUrl.Text = '网址列表:'
 $lblStartUrl.Location = New-Object System.Drawing.Point(410, 50)
 $lblStartUrl.Size = New-Object System.Drawing.Size(60, 18)
 $secStartup.Controls.Add($lblStartUrl)
@@ -2937,7 +2935,7 @@ $script:TxtStartupUrl.Enabled = $false
 $secStartup.Controls.Add($script:TxtStartupUrl)
 
 $startupHelp = New-Object System.Windows.Forms.Label
-$startupHelp.Text = 'For "specific page or set", separate multiple URLs with a comma. Each opens in its own tab.'
+$startupHelp.Text = '选择【特定网页或一组网页】时，多个网址请用英文逗号分隔，每个网址将在独立标签页中打开。' 
 $startupHelp.Location = New-Object System.Drawing.Point(35, 78)
 $startupHelp.Size = New-Object System.Drawing.Size(900, 18)
 $startupHelp.ForeColor = [System.Drawing.Color]::DimGray
@@ -2952,7 +2950,7 @@ $script:CmbStartupMode.Add_SelectedIndexChanged({
 
 # Conflict note
 $conflictNote = New-Object System.Windows.Forms.Label
-$conflictNote.Text = "Note: this tab is processed AFTER the Performance / Startup tab, so it cleanly overrides any 'NewTabPageLocation' / 'HomepageLocation' / 'RestoreOnStartup' values set there. Untick + Apply removes the override and lets your Performance tab values (or stock Brave) take back over."
+$conflictNote.Text = "说明：此选项卡将在【性能与启动】选项卡之后处理，因此会直接覆盖其中设置的 NewTabPageLocation / HomepageLocation / RestoreOnStartup 值。取消勾选并应用即可恢复原策略或 Brave 默认行为。" 
 $conflictNote.Location = New-Object System.Drawing.Point(10, 384)
 $conflictNote.Size = New-Object System.Drawing.Size(1100, 36)
 $conflictNote.ForeColor = [System.Drawing.Color]::FromArgb(120, 60, 30)
@@ -2961,14 +2959,14 @@ $searchTab.Controls.Add($conflictNote)
 
 # --- Section 4: Extensions (manual installs, no force-push) -----------------
 $secExt = New-Object System.Windows.Forms.GroupBox
-$secExt.Text = 'Extensions (optional, manual install)'
+$secExt.Text = '推荐扩展（可选，手动安装）'
 $secExt.Location = New-Object System.Drawing.Point(10, 426)
 $secExt.Size = New-Object System.Drawing.Size(1110, 130)
 $secExt.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9)
 $searchTab.Controls.Add($secExt)
 
 $extIntro = New-Object System.Windows.Forms.Label
-$extIntro.Text = "Brave Shields is already a native ad/tracker blocker (same filter-list lineage as uBlock Origin, runs in-engine so slightly faster). We do NOT force-install anything - that would show a 'Managed by your organization' banner and lock the extension on. These buttons just open the install pages in Brave so you can decide."
+$extIntro.Text = "Brave Shields 本身就是原生级广告/追踪拦截器（与 uBlock Origin 采用相同规则源，且在内核引擎中运行，速度更轻快）。我们不会强制静默安装任何扩展——因为那会显示【由贵组织管理】横幅并锁定扩展。点击下方按钮将在 Brave 中直接打开安装页面，由您自主决定。" 
 $extIntro.Location = New-Object System.Drawing.Point(15, 22)
 $extIntro.Size = New-Object System.Drawing.Size(1080, 36)
 $extIntro.Font = New-Object System.Drawing.Font('Segoe UI', 8.5)
@@ -2976,7 +2974,7 @@ $extIntro.ForeColor = [System.Drawing.Color]::FromArgb(60, 60, 60)
 $secExt.Controls.Add($extIntro)
 
 $extWarn = New-Object System.Windows.Forms.Label
-$extWarn.Text = 'Caution: running uBlock Origin on top of Shields = double-blocking. Wastes CPU per tab and can break sites Shields handles fine. If you install uBO, consider switching Shields to Standard (not Aggressive) to reduce overlap.'
+$extWarn.Text = '提示：在 Shields 之上叠加 uBlock Origin 属于双重拦截。会增加每个标签页的 CPU 开销，并可能导致网页排版异常。若安装 uBO，建议将 Shields 设为标准模式以减少规则冲突。' 
 $extWarn.Location = New-Object System.Drawing.Point(15, 60)
 $extWarn.Size = New-Object System.Drawing.Size(1080, 32)
 $extWarn.Font = New-Object System.Drawing.Font('Segoe UI', 8)
@@ -2984,7 +2982,7 @@ $extWarn.ForeColor = [System.Drawing.Color]::FromArgb(160, 70, 30)
 $secExt.Controls.Add($extWarn)
 
 $btnUboLite = New-Object System.Windows.Forms.Button
-$btnUboLite.Text = 'Install uBlock Origin Lite (MV3)'
+$btnUboLite.Text = '安装 uBlock Origin Lite (MV3)'
 $btnUboLite.Size = New-Object System.Drawing.Size(220, 28)
 $btnUboLite.Location = New-Object System.Drawing.Point(15, 95)
 $btnUboLite.Add_Click({
@@ -2996,7 +2994,7 @@ $btnUboLite.Add_Click({
 $secExt.Controls.Add($btnUboLite)
 
 $btnShieldsSettings = New-Object System.Windows.Forms.Button
-$btnShieldsSettings.Text = 'Open Brave Shields settings'
+$btnShieldsSettings.Text = '打开 Brave Shields 防护设置'
 $btnShieldsSettings.Size = New-Object System.Drawing.Size(200, 28)
 $btnShieldsSettings.Location = New-Object System.Drawing.Point(245, 95)
 $btnShieldsSettings.Add_Click({
@@ -3006,7 +3004,7 @@ $btnShieldsSettings.Add_Click({
 $secExt.Controls.Add($btnShieldsSettings)
 
 $btnBitwarden = New-Object System.Windows.Forms.Button
-$btnBitwarden.Text = 'Install Bitwarden (password manager)'
+$btnBitwarden.Text = '安装 Bitwarden (密码管理器)'
 $btnBitwarden.Size = New-Object System.Drawing.Size(240, 28)
 $btnBitwarden.Location = New-Object System.Drawing.Point(455, 95)
 $btnBitwarden.Add_Click({
@@ -3119,7 +3117,7 @@ $form.Controls.Add($utilityPanel)
 
 # Export config to JSON
 $btnExport = New-Object System.Windows.Forms.Button
-$btnExport.Text = 'Export config'
+$btnExport.Text = '导出配置'
 $btnExport.Size = New-Object System.Drawing.Size(110, 30)
 $btnExport.Location = New-Object System.Drawing.Point(420, 5)
 $btnExport.Add_Click({
@@ -3172,7 +3170,7 @@ $utilityPanel.Controls.Add($btnExport)
 
 # Import config from JSON
 $btnImport = New-Object System.Windows.Forms.Button
-$btnImport.Text = 'Import config'
+$btnImport.Text = '导入配置'
 $btnImport.Size = New-Object System.Drawing.Size(110, 30)
 $btnImport.Location = New-Object System.Drawing.Point(535, 5)
 $btnImport.Add_Click({
@@ -3253,14 +3251,14 @@ $btnImport.Add_Click({
     Update-SelectionSummary
     Write-Log "Config imported from $($ofd.FileName) (version $($cfg.version))" 'OK'
     [System.Windows.Forms.MessageBox]::Show(
-        "Config loaded into checkboxes.`r`nClick 'Apply to Brave' (and the Hosts tab if needed) to commit.",
-        'Imported', 'OK', 'Information') | Out-Null
+        "配置已成功加载至各勾选框。`r`n请点击【应用到 Brave】（以及按需在 Hosts 选项卡中点击应用）以提交生效。",
+        '导入成功', 'OK', 'Information') | Out-Null
 })
 $utilityPanel.Controls.Add($btnImport)
 
 # Verify - read registry, compare to UI selections
 $btnVerify = New-Object System.Windows.Forms.Button
-$btnVerify.Text = 'Verify'
+$btnVerify.Text = '校验策略'
 $btnVerify.Size = New-Object System.Drawing.Size(80, 30)
 $btnVerify.Location = New-Object System.Drawing.Point(650, 5)
 $btnVerify.Add_Click({
@@ -3348,7 +3346,7 @@ $btnVerify.Add_Click({
 $utilityPanel.Controls.Add($btnVerify)
 
 $btnLoad = New-Object System.Windows.Forms.Button
-$btnLoad.Text = 'Load current state'
+$btnLoad.Text = '读取当前系统状态'
 $btnLoad.Size = New-Object System.Drawing.Size(145, 30)
 $btnLoad.Location = New-Object System.Drawing.Point(0, 5)
 $btnLoad.Add_Click({
@@ -3420,7 +3418,7 @@ $btnLoad.Add_Click({
                     }
                 }
                 if (-not $matched) {
-                    $script:CmbSearchEngine.SelectedItem = 'Custom...'
+                    $script:CmbSearchEngine.SelectedItem = '自定义 (Custom)...'
                     $script:TxtCustomSearchUrl.Text = $url
                 }
             } catch {}
@@ -3438,7 +3436,7 @@ $btnLoad.Add_Click({
                 }
             }
             if (-not $matched) {
-                $script:CmbNtpDest.SelectedItem = 'Custom URL...'
+                $script:CmbNtpDest.SelectedItem = '自定义网址 (Custom URL)...'
                 $script:TxtNtpCustomUrl.Text = $ntpUrl
             }
         } catch { $script:ChkNtpOverride.Checked = $false }
@@ -3470,7 +3468,7 @@ $btnLoad.Add_Click({
 $utilityPanel.Controls.Add($btnLoad)
 
 $btnOpenBrave = New-Object System.Windows.Forms.Button
-$btnOpenBrave.Text = 'Open brave://policy'
+$btnOpenBrave.Text = '打开 brave://policy'
 $btnOpenBrave.Size = New-Object System.Drawing.Size(150, 30)
 $btnOpenBrave.Location = New-Object System.Drawing.Point(155, 5)
 $btnOpenBrave.Add_Click({
@@ -3481,14 +3479,14 @@ $btnOpenBrave.Add_Click({
 $utilityPanel.Controls.Add($btnOpenBrave)
 
 $btnClose = New-Object System.Windows.Forms.Button
-$btnClose.Text = 'Close'
+$btnClose.Text = '关闭'
 $btnClose.Size = New-Object System.Drawing.Size(95, 30)
 $btnClose.Location = New-Object System.Drawing.Point(315, 5)
 $btnClose.Add_Click({ $form.Close() })
 $utilityPanel.Controls.Add($btnClose)
 
 $flowLabel = New-Object System.Windows.Forms.Label
-$flowLabel.Text = 'Pick mode -> tweak -> Preview -> Apply -> restart Brave -> Verify'
+$flowLabel.Text = '流程：选择模式 -> 微调策略 -> 预览变更 -> 应用到 Brave -> 重启浏览器 -> 校验策略'
 $flowLabel.Location = New-Object System.Drawing.Point(740, 11)
 $flowLabel.Size = New-Object System.Drawing.Size(400, 18)
 $flowLabel.ForeColor = [System.Drawing.Color]::DimGray
@@ -3502,14 +3500,14 @@ $actionPanel.Anchor = 'Left, Right, Bottom'
 $form.Controls.Add($actionPanel)
 
 $chkBackup = New-Object System.Windows.Forms.CheckBox
-$chkBackup.Text = 'Backup existing policies before applying'
+$chkBackup.Text = '应用前自动备份现有策略'
 $chkBackup.Checked = $true
 $chkBackup.Location = New-Object System.Drawing.Point(0, 12)
 $chkBackup.Size = New-Object System.Drawing.Size(270, 20)
 $actionPanel.Controls.Add($chkBackup)
 
 $btnPreview = New-Object System.Windows.Forms.Button
-$btnPreview.Text = 'Preview changes'
+$btnPreview.Text = '预览变更'
 $btnPreview.Size = New-Object System.Drawing.Size(140, 34)
 $btnPreview.Location = New-Object System.Drawing.Point(280, 4)
 $btnPreview.Add_Click({
@@ -3518,7 +3516,7 @@ $btnPreview.Add_Click({
 $actionPanel.Controls.Add($btnPreview)
 
 $btnApply = New-Object System.Windows.Forms.Button
-$btnApply.Text = 'Apply to Brave'
+$btnApply.Text = '应用到 Brave'
 $btnApply.Size = New-Object System.Drawing.Size(150, 34)
 $btnApply.Location = New-Object System.Drawing.Point(430, 4)
 $btnApply.BackColor = [System.Drawing.Color]::FromArgb(37, 99, 63)
@@ -3613,7 +3611,7 @@ $btnApply.Add_Click({
     Write-Log "Done. Applied $applied policies, cleared $cleared. Restart Brave to take effect." 'DONE'
     $activeModeLabel = if ($script:ProfileDisplayNames.ContainsKey($script:ActiveProfile)) { $script:ProfileDisplayNames[$script:ActiveProfile] } else { $script:ActiveProfile }
     [System.Windows.Forms.MessageBox]::Show(
-        "Mode: $activeModeLabel`r`nApplied $applied policies, cleared $cleared.`r`n`r`nRestart Brave to see changes.`r`nVerify at: brave://policy",
+        "当前模式: $activeModeLabel`r`n已应用 $applied 条策略，已清除 $cleared 条。`r`n`r`n请完全重启 Brave 浏览器以使改动生效。`r`n可在浏览器中访问 brave://policy 检验生效情况。",
         'Brave Free Origin',
         [System.Windows.Forms.MessageBoxButtons]::OK,
         [System.Windows.Forms.MessageBoxIcon]::Information) | Out-Null
@@ -3621,7 +3619,7 @@ $btnApply.Add_Click({
 $actionPanel.Controls.Add($btnApply)
 
 $btnRemoveAll = New-Object System.Windows.Forms.Button
-$btnRemoveAll.Text = 'Full restore / stock'
+$btnRemoveAll.Text = '完全还原 / 恢复默认'
 $btnRemoveAll.Size = New-Object System.Drawing.Size(170, 34)
 $btnRemoveAll.Location = New-Object System.Drawing.Point(590, 4)
 $btnRemoveAll.BackColor = [System.Drawing.Color]::FromArgb(150, 60, 60)
@@ -3629,13 +3627,13 @@ $btnRemoveAll.ForeColor = [System.Drawing.Color]::White
 $btnRemoveAll.Add_Click({
     $targets = $script:TargetChannels -join ', '
     $ans = [System.Windows.Forms.MessageBox]::Show(
-        "This will restore stock behavior for: $targets`r`n`r`nIt removes Brave policy keys, clears the Brave-Free-Origin hosts block, re-enables known Brave update tasks, and resets known disabled Brave services to Manual.`r`n`r`nContinue?",
-        'Full restore / stock',
+        "这将为以下版本频道恢复官方默认状态: $targets`r`n`r`n操作将删除 Brave 策略注册表项、清除 Brave-Free-Origin hosts 屏蔽块、重新启用已知的 Brave 更新任务，并将已禁用的 Brave 更新服务重置为手动启动。`r`n`r`n是否继续？",
+        '完全还原 / 恢复默认',
         [System.Windows.Forms.MessageBoxButtons]::YesNo,
         [System.Windows.Forms.MessageBoxIcon]::Warning)
     if ($ans -ne 'Yes') { return }
     Invoke-FullRestore -Backup $chkBackup.Checked
-    [System.Windows.Forms.MessageBox]::Show('Full restore completed. Restart Brave to see stock behavior.', 'Brave Free Origin', 'OK', 'Information') | Out-Null
+    [System.Windows.Forms.MessageBox]::Show('完全还原已完成。请重启 Brave 浏览器以恢复默认状态。', 'Brave Free Origin', 'OK', 'Information') | Out-Null
 })
 $actionPanel.Controls.Add($btnRemoveAll)
 
@@ -3656,9 +3654,9 @@ Update-SelectionSummary
 
 # ---- Startup ---------------------------------------------------------------
 $form.Add_Shown({
-    Write-Log 'Running as administrator - OK.'
-    Write-Log "Brave version: $braveVer"
-    Write-Log 'Loading current policy state...'
+    Write-Log '已获得管理员权限运行 - 正常。'
+    Write-Log "Brave 版本: $braveVer"
+    Write-Log '正在读取当前系统策略状态...'
     $btnLoad.PerformClick()
 })
 

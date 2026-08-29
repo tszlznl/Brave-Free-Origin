@@ -1,431 +1,166 @@
-# Brave Free Origin (v1.11)
+# Brave Free Origin (v1.11 - 中文版)
 
-`Brave Free Origin` is a Windows GUI tool that turns normal Brave into a leaner, stripped-down build without paying for Brave Origin.
+`Brave Free Origin` 是一个适用于 Windows 的图形界面工具，通过本地企业组策略将普通的 Brave 浏览器改造为极简、低占用的纯净版本，无需为官方的 Brave Origin 付费。
 
-The point is simple: Brave took the "remove the AI, crypto, VPN, promo junk" idea, called it Origin, and put it behind a paid upgrade. This project does the local Windows policy version of that idea for free, and then goes further with extra performance-focused modes.
+本工具的核心初衷很简单：Brave 官方将“移除 AI、加密货币、VPN、推广营销等冗余内容”的极简构想命名为 Origin 并列为付费升级项目。而本项目通过 Windows 本地策略免费实现相同的效果，并进一步提供针对性能与低延迟的深度优化模式。
 
-It is inspired by [MulesGaming/brave-debullshitinator](https://github.com/MulesGaming/brave-debullshitinator), but reshaped into a cleaner WinForms app with one-click modes, screenshots, backups, and a more normal Windows-user flow.
+本项目灵感源自 [MulesGaming/brave-debullshitinator](https://github.com/MulesGaming/brave-debullshitinator)，并重构为更整洁美观的 WinForms 桌面应用，支持一键预设模式、配置备份、模拟预览、Hosts 域名拦截以及高级脚本管理。
 
 ![Brave Free Origin GUI](images/screenshot.png)
 
 ---
 
-## Quick Start (read this first)
+## 快速上手指南（请先阅读）
 
-**1. Extract the whole folder out of the ZIP.** Don't try to run anything from inside the ZIP — Windows blocks PowerShell scripts launched from compressed archives.
+**1. 完整解压 ZIP 压缩包中的所有文件。** 请勿直接在压缩包内双击运行——Windows 会限制在临时压缩目录中启动 PowerShell 脚本。
 
-**2. Double-click `Brave-Free-Origin.bat`.**
+**2. 双击运行 `Brave-Free-Origin.bat`。**
 
-That is the launcher. It opens PowerShell with the right execution-policy flag and asks Windows for administrator permission.
+这是推荐的启动器。它会以单次 `-ExecutionPolicy Bypass` 方式启动 PowerShell 并请求管理员权限。
 
-> ⚠️ **Important:** do **not** double-click `Brave-Free-Origin.ps1` directly. Windows opens `.ps1` files in Notepad by default — the GUI will *not* appear and you will think the tool is broken. **Always use the `.bat`.**
+> ⚠️ **重要提示：** 请 **不要** 直接双击 `Brave-Free-Origin.ps1`。Windows 默认会用“记事本”打开 `.ps1` 文件，导致图形界面无法出现。**请始终双击运行 `.bat` 文件。**
 
-**3. Click "Yes" on the UAC prompt.** Admin rights are required because the tool writes to `HKEY_LOCAL_MACHINE\Software\Policies\BraveSoftware\Brave` — the same place corporate IT writes group policies. No admin = no policies = nothing happens.
+**3. 在 UAC（用户账户控制）弹窗中点击“是”。** 本工具需要管理员权限，因为策略将写入注册表 `HKEY_LOCAL_MACHINE\Software\Policies\BraveSoftware\Brave`（企业 IT 部门部署组策略的标准位置）。没有管理员权限则无法应用系统策略。
 
-**4. In the GUI, click `Load current state`** (top-left) if you want to see what's already configured on your machine. The boxes light up to show what is already enforced.
+**4. 进入主界面后，可点击左下方的【读取当前系统状态】（Load current state）**，查看当前电脑上已经生效的策略。
 
-**5. Pick a mode** in the colored button row at the top:
+**5. 在顶部彩色按钮栏中选择一种预设模式：**
 
-| Button | What it does |
-|---|---|
-| **Quick Debloat** | Lightest cleanup. Removes the loudest extras (Rewards, Wallet, VPN, AI, password manager). Safest. |
-| **Recommended** | Sensible daily-driver setup. Good privacy + lighter UI + media-friendly defaults. |
-| **Origin Mode** | The free local answer to Brave's paywalled "Origin" build. |
-| **Privacy + Boost** | Origin Mode + startup and latency tuning. The performance default. |
-| **Max Performance** | Origin + Boost + Max Privacy unioned + extra UI trims. Aggressive. |
-| **Max Privacy** | Hard lockdown — disables sync, sign-in, imports, Brave update services. |
-| **Stock / None** | Unticks everything. Click `Apply to Brave` after to revert to default Brave. |
+| 预设按钮 | 功能说明 | 风险级别 |
+|---|---|---|
+| **快速瘦身 (Quick Debloat)** | 最轻度的精简。仅移除最显眼的商业推广（Rewards 打赏、加密钱包、VPN、Leo AI、密码管理器）。核心体验不受影响。 | 低风险 |
+| **推荐配置 (Recommended)** | 均衡的日常主力配置。优秀隐私防护 + 清爽界面 + 保持良好的多媒体兼容性。 | 低风险 |
+| **Origin 模式 (Origin Mode)** | 免费对标 Brave 官方付费的“Origin”极简纯净版。默认关闭 AI、钱包、VPN、新闻流、Talk、Tor、时光机等。 | 低风险 |
+| **隐私 + 提速 (Privacy + Boost)** | Origin 模式 + 启动加速与网络延迟优化。游戏、影音流媒体推荐的性能基准。 | 中风险 |
+| **极致性能 (Max Performance)** | 融合 Origin、隐私提速与强力隐私策略，并进一步精简界面组件。适合极客与游戏玩家的全开优化配置。 | 高风险 |
+| **极致隐私 (Max Privacy)** | 强力隐私锁定——禁用同步、账号登录、首次导入、Brave 后台更新服务等。 | 高风险 |
+| **恢复默认 (Stock / None)** | 取消所有策略勾选。点击【应用到 Brave】或【完全还原】即可恢复为官方默认状态。 | 无改动 |
 
-**6. (Optional) Tweak the tabs** below the buttons if you want to add/remove individual policies.
+**6. （可选）在下方各选项卡中按需微调具体策略：**
+- **Brave 功能特性**：GPU 硬件加速开关、Rewards、加密钱包、VPN、Leo AI、Brave News、Brave Talk、Tor、IPFS、WebTorrent 等。
+- **隐私与遥测**：P3A 产品分析、使用统计 Ping、Web Discovery、UMA 崩溃上报、Sec-GPC 信号、防指纹追踪、默认广告拦截等。
+- **自动填充与密码**：密码管理器、密码泄露检测、地址/信用卡自动填充等。
+- **搜索与联想建议**：地址栏联想词、云端拼写检查、Google 翻译弹窗提示等。
+- **安全与更新**：安全浏览级别、组件更新等。
+- **AI 与生成式 AI**：禁用 Chromium 所有的 GenAI、写作辅助、标签页整理等。
+- **网络服务与后台**：关闭窗口后退出后台、预读取连接、DoH 模式、个人资料同步、账号登录等。
+- **性能与启动**：QUIC/HTTP3、内存节省模式（休眠闲置标签页）、省电模式、250MB 磁盘缓存上限、空白新标签页启动等。
+- **界面冗余与附加功能**：实时字幕、Google Lens 区域搜索/图层搜索、阅读列表、书签栏等。
+- **系统组件 (任务/服务)**：管理 Brave Omaha 后台自动更新计划任务与 Windows 服务。
+- **Hosts 域名屏蔽 (DNS 级别)**：在 `hosts` 中将 Brave 遥测域名解析定向到 `0.0.0.0`，带专属标记块与自动备份。
+- **搜索与启动设置**：独立覆盖默认搜索引擎（如百度、必应、Google、Brave 等）、新标签页地址及启动打开页面。
+- **默认脚本规则 (高级)**：查看并手动管理 Brave 组件过滤列表中的 `##+js(...)` 广告拦截脚本规则（仅限手动高级模式）。
 
-There is also a `Default Scriptlets (Advanced)` tab. That is a separate optional tool for viewing Brave's built-in adblock scriptlet rules and manually disabling selected ones. Presets and the big `Apply to Brave` button never touch it.
+**7. 在应用前点击【预览变更】（Preview changes）**：生成模拟运行报告，清晰查看即将新增（ADD）、保持（KEEP）、修改（CHANGE）或清除（CLEAR）的具体项。预览不会对系统做任何写入。
 
-**7. Click `Preview changes`** before applying. It shows exactly what will be added, changed, cleared, disabled, or reset. Nothing is written from Preview.
+**8. 点击【应用到 Brave】（大绿色按钮）**。随后 **完全关闭并重新启动 Brave 浏览器**（正在运行的标签页需要重启以加载新策略）。
 
-**8. Click `Apply to Brave`** (the big green button). Then **fully close and reopen Brave** — running tabs need a restart to pick up the new policies.
+**9. （推荐）点击【校验策略】（Verify）**：程序将回读注册表并比对确认所选策略已全部成功写入。您也可以在 Brave 浏览器中打开 `brave://policy`，检查每条策略是否显示 `Source: Platform`、`Scope: Machine`、`Status: OK`。
 
-**9. (Recommended)** Click the `Verify` button in the app. It reads the registry back and confirms your selections actually landed. You can copy or save the report. Or open `brave://policy` and check that each policy shows `Source: Platform`, `Scope: Machine`, `Status: OK`.
+---
 
-### Files in this folder
+### 本文件夹中的文件说明
 
-```
+```text
 Brave-Free-Origin/
-├── Brave-Free-Origin.bat   ← double-click THIS one
-├── Brave-Free-Origin.ps1   ← never double-click this (opens in Notepad)
-├── README.md               ← you are here
-├── LICENSE
+├── Brave-Free-Origin.bat   ← 【双击运行此文件】
+├── Brave-Free-Origin.ps1   ← 主程序脚本（请勿直接双击，避免被记事本打开）
+├── README.md               ← 本说明文档
+├── LICENSE                 ← 开源许可证
 └── images/
-    ├── screenshot.png      ← GUI preview shown above
-    ├── Brave-before.png    ← memory comparison: before
-    └── Brave-after.png     ← memory comparison: after
+    ├── screenshot.png      ← 软件界面预览图
+    ├── Brave-before.png    ← 优化前内存占用对比
+    └── Brave-after.png     ← 优化后内存占用对比
 ```
 
-The launcher (`.bat`) is essentially one line: it runs the PowerShell script with `-ExecutionPolicy Bypass`. That bypass is scoped only to that single launch — it does **not** weaken your machine's PowerShell policy.
+启动器（`.bat`）采用单次 `-ExecutionPolicy Bypass` 运行 PowerShell 脚本，仅对本次启动生效，**不会** 降低或永久修改您系统的全局安全策略。
 
 ---
 
-<details>
-<summary><strong>📜 Changelog (click to expand)</strong></summary>
+## 优化前后效果对比 (Before / After)
 
-### What's new in v1.11
+以下为优化前后的任务管理器内存占用实测对比：
 
-This fixes the scriptlet scan hang from v1.10.
+在测试环境中，优化后 `Brave 浏览器 (7 个进程)` 的常驻内存占用从约 **305.7 MB** 降低到 **222.4 MB**，同时消除了后台遥测、AI 服务与多余连接开销。
 
-- **Chunked in-app scanner.** Replaces the background-job scan with a timer-based chunk scanner, avoiding the slow PowerShell job serialization step that could sit on `Loading scriptlet scan results...` for minutes.
-- **Real progress bar.** The Scriptlets tab now shows a blue progress bar and live status based on files/bytes processed, current file, elapsed seconds, and rules found.
-- **Responsive during scan.** The scan yields back to the GUI every small chunk, so Windows should not mark the app as Not Responding while large Brave lists are being read.
-- **Chunked table rendering.** Large scriptlet result sets render in batches instead of locking the whole window while thousands of rows are painted.
-- **Safer bulk checking.** `Check filtered` now checks every scanned rule matching the current search/filter, including rows that are not currently painted in the table yet.
-- **Clearer filtered workflow.** If `Show disabled by this app only` is enabled, `Check filtered` only checks the disabled subset currently being shown. Untick it and clear the search box before bulk-disabling every scriptlet rule.
+### 优化前
 
-### What's new in v1.10
+![Brave 优化前](images/Brave-before.png)
 
-This is the scriptlet-manager usability fix.
+### 优化后
 
-- **Background scriptlet scan.** Loading Brave's internal scriptlet lists now runs in a background PowerShell job instead of freezing the whole GUI.
-- **Faster table refresh.** Search/filter updates use debouncing and bulk row loading, so toggling filters no longer feels like the app died.
-- **Checkbox selection.** Scriptlet rows now have checkboxes. Checked rows are used first; normal highlighted selection still works as a fallback.
-- **Check filtered / clear checks.** Search for something like `youtube`, click `Check filtered`, then disable or enable the filtered set in one action.
-- **Clearer wording.** The UI says `disabled by this app` / `Disabled by Brave Free Origin` instead of assuming everyone knows what `BFO` means. The internal file marker remains `! BFO disabled:` for compatibility with existing backups and disabled rules.
-- **Adaptive columns.** The scriptlet table now resizes its columns with the window instead of staying stuck at the original widths.
-
-### What's new in v1.9
-
-This is the advanced scriptlet transparency release. It adds a separate manager for Brave's built-in adblock scriptlets without mixing that risky workflow into the normal presets.
-
-- **Default Scriptlets (Advanced) tab.** Scans Brave `User Data` component folders for filter-list `list.txt` files and lists internal `##+js(...)` scriptlet rules.
-- **Viewer columns for auditability.** Shows enabled state, domain, scriptlet name, arguments, source/version, line number, and raw rule.
-- **Portable path handling.** Auto-detects Brave Stable/Beta/Nightly/Dev User Data locations from `%LOCALAPPDATA%`, with manual `Browse...` support when Brave lives somewhere unusual.
-- **Manual-only advanced editing.** Scriptlet edits are not part of Quick Debloat, Recommended, Origin Mode, Max Performance, Max Privacy, presets, config apply, or the main `Apply to Brave` button. You must open the advanced tab, scan, tick `Advanced edit mode`, select rules, and confirm the action.
-- **Per-scriptlet disable/enable.** Disabling comments rules with `! BFO disabled:`. Enabling restores the original rule text.
-- **Duplicate handling.** Brave lists can contain the same raw scriptlet rule more than once; the manager can affect duplicate raw rules in the same file so one selection does not leave a twin active by accident.
-- **Backup and restore.** Creates `list.txt.bfo-backup` before edits, with buttons to back up all loaded lists, restore the selected file, or restore all scriptlet backups under the selected User Data folder.
-- **Export and reapply preferences.** Exports currently disabled raw rules to JSON and can reapply those disabled preferences after Brave updates replace component versions.
-- **CSV export.** Saves the visible filtered scriptlet table for inspection, bug reports, or GitHub issue evidence.
-
-### What's new in v1.8
-
-This is the trust-and-restore release. No random checkbox pile-on; the point is making the tool safer to use and easier to audit.
-
-- **Preview changes button.** Generates a dry-run report before writing anything. It shows per-channel policy adds, changes, clears, already-correct values, search/new-tab/startup override changes, scheduled task actions, service actions, and a reminder that hosts are managed separately.
-- **Preview hosts button.** The Hosts tab now shows what domains will be added, kept, or removed from the Brave-Free-Origin sentinel block before editing `hosts`.
-- **Full restore / stock button.** Replaces the old narrow "Remove ALL policies" behavior. It now removes Brave policy keys, clears the Brave-Free-Origin hosts block, re-enables known Brave update scheduled tasks, and resets known disabled Brave services to Manual.
-- **Copy/save reports.** Preview and Verify reports open in a scrollable dialog with Copy and Save report buttons. This makes support/debugging cleaner.
-- **Config export version bumped to `1.8`.** Exported JSON now reflects the current app generation.
-
-### What's new in v1.7
-
-Two fixes / additions, both about the ad blocker.
-
-- **Preset bug fix: Origin Mode and Privacy + Boost now enforce ad blocking.** Earlier versions used a hand-curated list that omitted the Shields policies, so picking those modes left ad blocking at Brave's default instead of `Block`. Ad blocking is a **performance win** (fewer requests, less DOM, less JS) on top of being Brave's whole identity, so it belongs in the boost preset. Origin Mode and everything that derives from it now also force `DefaultBraveAdblockSetting=Block`, fingerprint protection to Standard, strict referrers, tracking-param stripping, De-AMP, and debouncing.
-- **Extensions section in the Search & Startup tab.** Two convenience buttons that just open install pages in Brave — no force-install, no "Managed by your organization" banner. uBlock Origin Lite (MV3-safe), Brave Shields settings, Bitwarden. Includes a one-line warning about double-blocking if you stack uBO on top of Shields.
-
-#### Why we don't auto-install uBlock Origin
-
-Brave Shields and uBO are roughly equivalent — same filter-list lineage, Shields runs native in the engine so it's marginally faster than uBO-as-an-extension. Stacking both wastes CPU per tab and breaks sites Shields handles fine because their default filter sets differ. Force-installing extensions via `ExtensionInstallForcelist` shows users a "Managed by your organization" banner and locks the extension on, which is invasive UX. Manifest V2 is also being deprecated, so pinning users to full uBO would age badly. uBO Lite (MV3) is the future-proof choice if you want a second blocker, hence the button.
-
-### What's new in v1.6
-
-Two additions, both opt-in.
-
-- **Search & Startup tab.** Three independent sections, each gated by its own checkbox so nothing fires unless you explicitly tick it.
-  - **Default search engine** for the omnibox: Brave Search, DuckDuckGo, Startpage, Qwant, Ecosia, Mojeek, Kagi, Google, Bing, Yandex, or a custom URL (must contain `{searchTerms}`). Writes the `DefaultSearchProvider*` policies. Untick + Apply removes the override and lets Brave's user-chosen engine come back.
-  - **New tab page**: blank / search engine homepage / custom URL. Writes `NewTabPageLocation`. Replaces and overrides anything the Performance tab set.
-  - **Startup behavior**: open new tab / restore last session / open blank / open a specific page or comma-separated set. Writes `RestoreOnStartup` and (when applicable) the `RestoreOnStartupURLs` list policy.
-  - All three run **last** in the apply order, so they cleanly win over any matching policy ticks in the Performance / Startup tab. They also clear their own keys before writing, so unticking + Apply truly removes the override (no orphan registry entries).
-  - Round-trips through Export/Import config and is included in the Verify report.
-
-- **Hosts blocks now wire into presets, with a strict no-orphan rule.** Picking a mode now also pre-ticks the hosts groups whose underlying feature is *also* being disabled by that mode's policies. Specifically:
-  - Quick Debloat → P3A, Variations, Stats ping, Web Discovery, Rewards (matches its policy set; News stays unblocked because Quick leaves News policy on).
-  - Recommended / Origin / Privacy + Boost → above + News CDN.
-  - Max Performance / Max Privacy → above + Component Updates (matches `ComponentUpdatesEnabled = 0`).
-  - Stock / None → all unticked.
-  - Hosts apply still has its own button in the Hosts tab — presets only suggest, they never write hosts entries silently.
-
-### What's new in v1.5
-
-Four additions, all opt-in and reversible. Nothing changes in existing modes — the new features sit alongside what you already know.
-
-- **Multi-channel target selector.** A dropdown in the header now lets you point the apply at Brave Stable, Beta, Nightly, Dev, or all installed channels at once. Other channels share the same policy schema but live under separate registry hives.
-- **Hosts file blocklist tab.** Optional DNS-level kill switch for Brave telemetry domains. Even if a Brave update bypasses a policy, the network call still fails. Sentinel-tagged in the hosts file (`# === Brave-Free-Origin START ===` / `=== END ===`) so removal is surgical and never touches your other entries. Auto-backs up `hosts` before any write. Has its own Apply / Remove buttons inside the tab — does **not** fire from the main "Apply to Brave" button, so you can never edit hosts by accident.
-- **Export / Import config.** Save your tuned checkbox state to a JSON file and reuse it on another machine, or share a community preset. Round-trips policies, tasks, services, and hosts groups.
-- **Verify button.** Reads the registry of every target channel and reports back which selected policies are present, missing, or have a wrong value. Also lists currently-blocked hosts entries. Useful when [Brave bug 45106](https://github.com/brave/brave-browser/issues/45106) leaves a feature visible despite the policy being set — `Verify` proves the registry is correct so you know whose problem it is.
-
-#### Will antivirus flag any of this?
-
-Short answer: no, by design.
-
-- No executable modification, no code-signing changes, no hex-edited binaries.
-- No new scheduled tasks, no auto-startup entries, no persistence mechanism.
-- Registry writes target the standard enterprise-policy hive — exactly what corporate IT does to manage browsers.
-- Hosts file edits use a clearly-labeled sentinel block that an admin can read or remove with Notepad. We use ASCII encoding (the format Windows expects); some AVs flag UTF-16 hosts files, ours does not.
-- Every destructive operation backs up first, into `Documents\Brave-Free-Origin-Backups\`.
-
-If your AV does flag the script, it's flagging the act of registry writes from PowerShell, not anything specific we do. Reading the script confirms it.
-
-#### Conflict notes
-
-The new features don't conflict with each other or with the existing modes. A few things to know:
-
-- Hosts blocking is a layered defense **on top of** policies, not a replacement. Picking a mode + ticking hosts blocks is the intended use.
-- The **Components** hosts group will stop Widevine and similar from updating. Only tick it if you also have `ComponentUpdatesEnabled` policy off (the same caveat as in Max Privacy mode).
-- Multi-channel apply does the same set of policies to every selected channel. If you only have Stable installed, leave the dropdown on Stable.
-- `Verify` reads from the dropdown's selected channel(s). Switch the dropdown, click Verify again to check a different channel.
-
-</details>
+![Brave 优化后](images/Brave-after.png)
 
 ---
 
-## What It Does
+## 核心机制与原理
 
-The app writes Brave enterprise policies to:
+本工具通过向注册表写入 Brave 官方支持的企业组策略（Group Policies）来生效：
 
 `HKLM\Software\Policies\BraveSoftware\Brave`
 
-That means it is not just hiding buttons visually. It is using the same managed-policy system organizations use to disable features in Chromium-based browsers.
+这意味着它并不是简单地在前端隐藏按钮，而是通过 Chromium 内核底层机制彻底关闭对应模块的功能、后台进程与网络请求。
 
-### About the "Managed by your organization" note
+### 关于“由贵组织管理”(Managed by your organization) 提示
 
-Because this tool writes real enterprise policies under `HKLM\Software\Policies\BraveSoftware\Brave`, Brave will show a **"Managed by your organization"** entry in its menu and on `brave://management` for as long as any policy is applied. This is a Chromium transparency feature: any browser with active machine-level policies shows it. There is **no supported way to keep the policies but hide the note** — Brave declined to add one, so attempting to force it off would mean unsupported hacks that can break the policy system. The only clean way to remove the note is to remove the policies (untick everything and Apply, or use the built-in reset/restore). This is by design, not a bug.
+由于本工具写入的是真实的企业级策略（位于 `HKLM\Software\Policies` 下），Brave 浏览器在应用策略后，菜单底部和 `brave://management` 页面中会显示 **“由贵组织管理”** 提示。
 
-It can disable or reduce:
+这是所有 Chromium 系列浏览器（Chrome、Edge、Brave 等）内置的透明度安全机制，旨在告知用户当前浏览器受系统策略约束。**官方没有提供在保留策略的同时隐藏该提示的途径**。若要移除此提示，只需在工具中取消所有勾选并点击【应用到 Brave】或使用【完全还原】，策略清除后提示即自动消失。此为正常现象而非软件故障。
 
-- Leo / AI and Chromium GenAI features
-- Brave Rewards
-- Brave Wallet / crypto / Web3 extras
-- Brave VPN
-- Brave News
-- Brave Talk
-- Playlist / Speedreader / Tor / IPFS / WebTorrent
-- P3A analytics, stats pings, Web Discovery, UMA metrics
-- background mode, prediction, media router, misc telemetry
-- first-run import nags, promo tabs, and other clutter
-- Brave update tasks and services in the aggressive modes
+---
 
-It can also tune Brave for a lighter footprint:
+## 还原与回滚说明 (Restore / Undo)
 
-- QUIC / HTTP3 on
-- hardware acceleration: pick Enable (1) or Disable (0) from the dropdown next to the checkbox (Disable is handy for buggy GPU drivers / artifacts)
-- memory saver on
-- lighter startup behavior
-- blank homepage / blank new tab in the performance modes
-- disk cache cap
-- less background browser noise
+本工具设计了完善的备份与恢复机制：
 
-v1.9 also adds an optional advanced scriptlet manager. It can view and manually disable Brave's built-in adblock scriptlet rules in component filter lists. This is intentionally separate from the normal policy system and is only for users who choose to open the advanced tab and accept the warnings.
-
-### Advanced scriptlet manager notes
-
-The `Default Scriptlets (Advanced)` tab is not part of the normal preset/apply flow. The one-click modes, policy tabs, config import, and big `Apply to Brave` button do not edit Brave's internal filter-list files.
-
-To bulk-disable matching scriptlets:
-
-1. Open `Default Scriptlets (Advanced)`.
-2. Click `Scan` and wait for rendering to finish.
-3. Use `Search/filter` if you only want a subset, such as `youtube`.
-4. Leave `Show disabled by this app only` unticked if you want active rules included.
-5. Tick `Advanced edit mode`.
-6. Click `Check filtered`.
-7. Confirm the status line shows the expected `Checked:` count.
-8. Click `Disable checked`.
-
-Disabling scriptlets is not the same as disabling Brave adblocking. Scriptlets are only the `##+js(...)` injected-rule layer used for site fixes, anti-annoyance behavior, cookie banners, video workarounds, and some anti-adblock handling. Brave can still block ads through network filters, cosmetic filters, and Shields even when scriptlets are disabled.
-
-## Before / After
-
-These screenshots are included in the project folder and show the exact comparison you added.
-
-In your example, `Brave Browser (7)` drops from about **305.7 MB** to **222.4 MB** in Task Manager after optimization.
-
-### Before
-
-![Brave before optimization](images/Brave-before.png)
-
-### After
-
-![Brave after optimization](images/Brave-after.png)
-
-## Important Windows Notes
-
-### Administrator rights
-
-This app writes under `HKLM`, so admin rights are required. That is normal. The PowerShell script auto-elevates, and the BAT launcher warns you about the UAC prompt.
-
-### Execution policy
-
-You do **not** need to change your system PowerShell execution policy.
-
-The launcher already starts PowerShell like this:
-
-```powershell
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File ".\Brave-Free-Origin.ps1"
-```
-
-That bypass applies only to that launch of the script. It does not permanently weaken your machine's policy.
-
-### SmartScreen / "Windows protected your PC"
-
-If Windows shows SmartScreen because this is a local script you made or downloaded:
-
-1. Click `More info`
-2. Click `Run anyway`
-
-Only do that if you trust this copy and know where it came from.
-
-### "This file came from another computer"
-
-If you downloaded the project and Windows blocks it:
-
-1. Right-click `Brave-Free-Origin.bat` or `Brave-Free-Origin.ps1`
-2. Click `Properties`
-3. If you see `Unblock`, tick it
-4. Click `Apply`
-
-If needed, do the same for the whole extracted folder contents.
-
-### Defender / antivirus warning
-
-Registry-editing tools, batch files, and PowerShell launchers can look suspicious to Windows security tools even when they are harmless. That is expected behavior for a tweak utility. Read the script if you want to verify exactly what it does.
-
-## Manual Launch
-
-If the BAT file is not working for some reason, open PowerShell in the project folder and run:
-
-```powershell
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File ".\Brave-Free-Origin.ps1"
-```
-
-If PowerShell says access is denied, the usual causes are:
-
-- the folder is still inside a ZIP
-- the file is blocked by Windows
-- you refused the UAC elevation prompt
-- another program is locking the file in OneDrive
-
-## How To Verify It Worked
-
-After applying settings and restarting Brave:
-
-1. Open `brave://policy`
-2. Look for the policies you selected
-3. Check that each relevant policy shows:
-
-- `Source: Platform`
-- `Scope: Machine`
-- `Status: OK`
-
-Then do a real-world check:
-
-- Leo should be gone or disabled
-- Rewards / Wallet / VPN / News UI should be reduced or removed depending on mode
-- startup should feel lighter in the performance modes
-- update services/tasks should only be disabled in the aggressive modes
-
-The in-app `Verify` report can be copied or saved to a text file. That is useful if Brave's UI still looks wrong but `brave://policy` says the registry policy is applied correctly.
-
-## Restore / Undo
-
-The app can export backups before applying changes, and v1.8 added a stronger stock restore path. v1.9 adds a separate backup/restore path for advanced scriptlet edits.
-
-Backups go to:
-
+备份文件统一存放于：
 `%USERPROFILE%\Documents\Brave-Free-Origin-Backups\`
 
-To preview a change before committing it:
+1. **完全恢复官方默认状态 (Full Restore)**：
+   - 打开本工具，选择目标版本频道，点击右下角红色的 **【完全还原 / 恢复默认】**。
+   - 工具将自动删除 Brave 策略注册表项、清除 hosts 屏蔽块、重新启用更新计划任务并将更新服务恢复为手动。
+2. **通过注册表备份恢复**：
+   - 每次应用前，工具会自动在备份目录下生成 `.reg` 注册表快照，双击对应快照即可还原注册表。
+3. **清除 Hosts 屏蔽**：
+   - 在【Hosts 域名屏蔽】选项卡中，点击【清除 Hosts 屏蔽块】即可手术式清除本工具添加的解析规则，绝不触碰您的其他自定义 hosts 条目。
+4. **脚本规则还原**：
+   - 在【默认脚本规则】选项卡中，勾选【高级编辑模式】后可使用【从备份还原选中文件】或【还原所有备份列表】恢复原始规则。
 
-1. Pick a mode or tweak checkboxes
-2. Click `Preview changes`
-3. Review the report
-4. Click `Apply to Brave` only if it looks right
+---
 
-To fully restore stock behavior:
+## 重要注意事项与常见问题
 
-1. Re-run the app
-2. Select the target channel, or `All installed channels`
-3. Click `Full restore / stock`
+### 1. 为什么必须使用管理员权限？
+本工具需要向注册表 `HKEY_LOCAL_MACHINE` 写入策略，这是 Windows 管理员级别权限。PowerShell 脚本会自动发起提权请求，请在 UAC 弹窗中选择“是”。
 
-That removes Brave policy keys, clears the Brave-Free-Origin hosts block, re-enables known Brave update tasks, and resets known disabled Brave services to Manual.
+### 2. SmartScreen 拦截提示“Windows 已保护你的电脑”怎么办？
+如果 Windows 弹出 SmartScreen 提示：
+1. 点击 **“更多信息” (More info)**
+2. 点击 **“仍要运行” (Run anyway)**
 
-For a lighter policy-only revert:
+### 3. 下载后提示“此文件来自其他计算机并可能被阻止”
+1. 右键点击 `Brave-Free-Origin.bat` 或 `Brave-Free-Origin.ps1`
+2. 选择 **“属性” (Properties)**
+3. 勾选底部的 **“解除锁定” (Unblock)** 并点击“应用”。
 
-1. Use `Stock / None`
-2. Click `Preview changes`
-3. Click `Apply to Brave`
+### 4. 杀毒软件 / Windows Defender 会报错吗？
+本工具完全开源透明：
+- 不修改任何浏览器二进制文件，不注入代码，不劫持 DLL。
+- 不添加任何自启动项或隐蔽计划任务。
+- 仅调用 Windows 标准注册表管理接口与 hosts 配置文件，并在每次修改前进行自动备份。
 
-Or:
-
-1. Double-click a `.reg` backup file to restore a previous registry state
-
-Or:
-
-1. Use the Hosts tab's `Remove hosts block` button to clear only the DNS-level blocklist
-
-Or, for advanced scriptlet edits only:
-
-1. Open `Default Scriptlets (Advanced)`
-2. Scan your Brave `User Data` folder
-3. Tick `Advanced edit mode`
-4. Use `Restore selected file` or `Restore all backups`
-
-Scriptlet restores use the local `list.txt.bfo-backup` files created beside Brave's component filter lists.
-
-## Caveats
-
-- `Origin Mode` is meant to mimic the stripped-down Brave Origin idea, but it is still doing it through Windows policies, not through a custom Brave build.
-- `Max Performance` is aggressive on purpose. It disables more convenience features and Brave updater services/tasks to cut overhead further.
-- `Max Privacy` is even harsher in some areas and can affect sign-in, sync, imports, component updates, and update flow.
-- Turning off component updates can break Widevine/DRM playback such as Netflix or some Spotify web playback scenarios.
-- Disabling built-in Brave scriptlets can break adblocking, anti-annoyance fixes, cookie banners, video playback, or site compatibility. Use the scriptlet manager only when you know which rule you are changing.
-- Brave can replace component filter-list versions during updates. Export disabled scriptlet preferences if you want to reapply the same raw-rule disables after an update.
-- Some Brave-side UI bugs can leave elements visible even when the policy is correctly applied. In that case, trust `brave://policy` first.
-
-## File Layout
-
-```text
-Brave-Free-Origin/
-├── Brave-Free-Origin.bat     # UAC-elevating launcher  ← double-click THIS
-├── Brave-Free-Origin.ps1     # Main GUI, single-file WinForms app
-├── README.md                 # this file
-├── LICENSE
-└── images/
-    ├── screenshot.png        # GUI preview
-    ├── Brave-before.png      # Memory comparison: before
-    └── Brave-after.png       # Memory comparison: after
+### 5. 如何手动在 PowerShell 中运行？
+若 BAT 启动异常，可在此文件夹中打开 PowerShell 并执行：
+```powershell
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File ".\Brave-Free-Origin.ps1"
 ```
 
-Backups land here:
+---
 
-```text
-%USERPROFILE%\Documents\Brave-Free-Origin-Backups\
-├── brave-policies-backup-YYYYMMDD-HHMMSS.reg   # registry snapshot before each apply
-├── hosts-backup-YYYYMMDD-HHMMSS.bak            # hosts snapshot before each hosts apply
-└── brave-free-origin-config-YYYYMMDD-HHMMSS.json   # exported configs
-```
+## 参考与来源 (Sources)
 
-Advanced scriptlet backups are stored beside the Brave component list they protect:
-
-```text
-%LOCALAPPDATA%\BraveSoftware\Brave-Browser\User Data\<component>\<version>\list.txt.bfo-backup
-```
-
-Disabled scriptlet preference exports are JSON files saved wherever you choose in the save dialog.
-
-## Platform Compatibility
-
-Brave Free Origin is Windows-only — it's a WinForms GUI that writes to HKEY_LOCAL_MACHINE\Software\Policies\BraveSoftware\Brave.
-
-For macOS, there's an unofficial companion project:
-
-[Johnny-Kao/brave-free-origin-macos](https://github.com/Johnny-Kao/brave-free-origin-macos) — applies the same category of Brave enterprise policies via macOS Managed Preferences (/Library/Managed Preferences/com.brave.Browser.plist) instead of the Windows Registry.
-
-
-It's independently written and maintained, not a fork of this project, and not officially supported here — check its own README for usage and caveats.
-
-
-## Sources
-
-- [Brave Help Center - Group Policy](https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy)
-- [Brave Help Center - What is Brave Origin?](https://support.brave.app/hc/en-us/articles/38561489788173-What-is-Brave-Origin)
-- [brave-core policy definitions](https://github.com/brave/brave-core/tree/master/components/policy/resources/templates/policy_definitions/BraveSoftware)
-- [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/)
-- Original [MulesGaming/brave-debullshitinator](https://github.com/MulesGaming/brave-debullshitinator)
+- [Brave 官方帮助中心 - 组策略指南](https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy)
+- [Brave 官方帮助中心 - 什么是 Brave Origin？](https://support.brave.app/hc/en-us/articles/38561489788173-What-is-Brave-Origin)
+- [brave-core 策略定义源码](https://github.com/brave/brave-core/tree/master/components/policy/resources/templates/policy_definitions/BraveSoftware)
+- [Chrome 企业版策略文档](https://chromeenterprise.google/policies/)
+- 上游项目：[MulesGaming/brave-debullshitinator](https://github.com/MulesGaming/brave-debullshitinator)
