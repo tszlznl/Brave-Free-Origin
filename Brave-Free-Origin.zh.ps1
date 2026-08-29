@@ -1719,19 +1719,19 @@ $script:MaxPerformancePolicies = @(
     )
 ) | Select-Object -Unique
 $script:ProfileDisplayNames = @{
-    'Minimal'        = 'Quick Debloat'
-    'Recommended'    = 'Recommended'
-    'Origin'         = 'Origin Mode'
-    'Performance'    = 'Privacy + Boost'
-    'MaxPerformance' = 'Max Performance'
-    'MaxPrivacy'     = 'Max Privacy'
-    'None'           = 'Stock / None'
+    'Minimal'        = '快速精简'
+    '推荐'    = '推荐'
+    'Origin'         = 'Origin 模式'
+    'Performance'    = '隐私 + 加速'
+    'MaxPerformance' = '最高性能'
+    'MaxPrivacy'     = '最高隐私'
+    'None'           = '标准 / 无'
     'CurrentState'   = 'Current State'
     'Custom'         = 'Custom'
 }
 $script:ProfileDescriptions = @{
     'Minimal'      = 'Quick debloat. Removes the loudest commercial extras without changing the whole browser.'
-    'Recommended'  = 'Balanced daily-driver setup. Good privacy, lighter UI, keeps core compatibility and media-friendly defaults.'
+    '推荐'  = 'Balanced daily-driver setup. Good privacy, lighter UI, keeps core compatibility and media-friendly defaults.'
     'Origin'       = 'Matches Brave Origin''s stripped-down idea from April 2026: off by default for Leo, Rewards, Wallet, VPN, News, Talk, Tor, Wayback, Web Discovery, and related stats.'
     'Performance'  = 'Privacy + Boost. Origin-style debloat plus startup and latency tuning for a leaner browser during gaming, streaming, or music use.'
     'MaxPerformance' = 'Full fusion mode: Origin Mode, Privacy + Boost, and the strong privacy set combined, plus a few extra UI trims. This is the closest thing to an all-in gamer build.'
@@ -1742,7 +1742,7 @@ $script:ProfileDescriptions = @{
 }
 $script:ProfileRisks = @{
     'Minimal'      = 'Low risk'
-    'Recommended'  = 'Low risk'
+    '推荐'  = 'Low risk'
     'Origin'       = 'Low risk'
     'Performance'  = 'Medium risk'
     'MaxPerformance' = 'High risk'
@@ -1763,7 +1763,7 @@ function Get-PresetPayload {
     $hostsComponents   = @('Component Updates')
 
     switch ($Preset) {
-        'Recommended' {
+        '推荐' {
             return @{
                 Policies = @(
                     foreach ($cat in $script:Policies.Keys) {
@@ -1887,7 +1887,7 @@ $header.Height = 112
 $header.BackColor = [System.Drawing.Color]::FromArgb(22, 27, 34)
 
 $titleLabel = New-Object System.Windows.Forms.Label
-$titleLabel.Text = 'Brave Free Origin'
+$titleLabel.Text = 'Brave 免费版本'
 $titleLabel.ForeColor = [System.Drawing.Color]::White
 $titleLabel.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 18)
 $titleLabel.Location = New-Object System.Drawing.Point(18, 10)
@@ -1913,7 +1913,7 @@ $header.Controls.Add($metaLabel)
 # Channel selector (multi-channel support)
 $detectedChannels = Get-DetectedChannels
 $channelLabel = New-Object System.Windows.Forms.Label
-$channelLabel.Text = 'Target channel:'
+$channelLabel.Text = '目标渠道:'
 $channelLabel.ForeColor = [System.Drawing.Color]::LightSteelBlue
 $channelLabel.Font = New-Object System.Drawing.Font('Segoe UI', 8.5)
 $channelLabel.Location = New-Object System.Drawing.Point(310, 70)
@@ -1983,20 +1983,20 @@ $modePanel.BorderStyle = 'FixedSingle'
 $form.Controls.Add($modePanel)
 
 $modeIntro = New-Object System.Windows.Forms.Label
-$modeIntro.Text = 'Pick a one-click mode, then tweak the tabs below if you want to go deeper.'
+$modeIntro.Text = '选择一键模式，然后可在下方标签中进行调整。'
 $modeIntro.Location = New-Object System.Drawing.Point(14, 10)
 $modeIntro.Size = New-Object System.Drawing.Size(620, 18)
 $modeIntro.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9)
 $modePanel.Controls.Add($modeIntro)
 
 $buttonSpecs = @(
-    @{Text='Quick Debloat';   Mode='Minimal';        X=14;  Width=104; Color=[System.Drawing.Color]::FromArgb(235, 236, 240)},
-    @{Text='Recommended';     Mode='Recommended';    X=124; Width=104; Color=[System.Drawing.Color]::FromArgb(220, 238, 222)},
-    @{Text='Origin Mode';     Mode='Origin';         X=234; Width=104; Color=[System.Drawing.Color]::FromArgb(250, 232, 210)},
-    @{Text='Privacy + Boost'; Mode='Performance';    X=344; Width=108; Color=[System.Drawing.Color]::FromArgb(218, 231, 248)},
-    @{Text='Max Performance'; Mode='MaxPerformance'; X=458; Width=118; Color=[System.Drawing.Color]::FromArgb(255, 224, 224)},
-    @{Text='Max Privacy';     Mode='MaxPrivacy';     X=582; Width=100; Color=[System.Drawing.Color]::FromArgb(229, 220, 240)},
-    @{Text='Stock / None';    Mode='None';           X=688; Width=100; Color=[System.Drawing.Color]::FromArgb(241, 241, 241)}
+    @{Text='快速精简';   Mode='Minimal';        X=14;  Width=104; Color=[System.Drawing.Color]::FromArgb(235, 236, 240)},
+    @{Text='推荐';     Mode='推荐';    X=124; Width=104; Color=[System.Drawing.Color]::FromArgb(220, 238, 222)},
+    @{Text='Origin 模式';     Mode='Origin';         X=234; Width=104; Color=[System.Drawing.Color]::FromArgb(250, 232, 210)},
+    @{Text='隐私 + 加速'; Mode='Performance';    X=344; Width=108; Color=[System.Drawing.Color]::FromArgb(218, 231, 248)},
+    @{Text='最高性能'; Mode='MaxPerformance'; X=458; Width=118; Color=[System.Drawing.Color]::FromArgb(255, 224, 224)},
+    @{Text='最高隐私';     Mode='MaxPrivacy';     X=582; Width=100; Color=[System.Drawing.Color]::FromArgb(229, 220, 240)},
+    @{Text='标准 / 无';    Mode='None';           X=688; Width=100; Color=[System.Drawing.Color]::FromArgb(241, 241, 241)}
 )
 foreach ($spec in $buttonSpecs) {
     $btn = New-Object System.Windows.Forms.Button
@@ -2150,7 +2150,7 @@ foreach ($cat in $script:Policies.Keys) {
 
 # ---- System tab: scheduled tasks + services --------------------------------
 $sysTab = New-Object System.Windows.Forms.TabPage
-$sysTab.Text = 'System (Tasks / Services)'
+$sysTab.Text = '系统（任务 / 服务）'
 $sysTab.AutoScroll = $true
 $sysTab.BackColor = [System.Drawing.Color]::White
 
@@ -2229,7 +2229,7 @@ $tabs.TabPages.Add($sysTab)
 # Independent from the main Apply button - has its own Apply/Remove inside the tab.
 # Sentinel-tagged so revert is surgical. Auto-backs up hosts file before any write.
 $hostsTab = New-Object System.Windows.Forms.TabPage
-$hostsTab.Text = 'Hosts Blocklist (DNS-level)'
+$hostsTab.Text = 'Hosts 屏蔽列表（DNS 级别）'
 $hostsTab.AutoScroll = $true
 $hostsTab.BackColor = [System.Drawing.Color]::White
 
@@ -2282,7 +2282,7 @@ foreach ($block in $script:HostsBlocks) {
 }
 
 $btnApplyHosts = New-Object System.Windows.Forms.Button
-$btnApplyHosts.Text = 'Apply hosts blocks'
+$btnApplyHosts.Text = '应用 Hosts 屏蔽'
 $btnApplyHosts.Size = New-Object System.Drawing.Size(160, 30)
 $btnApplyHosts.Location = New-Object System.Drawing.Point(15, ($y + 10))
 $btnApplyHosts.BackColor = [System.Drawing.Color]::FromArgb(37, 99, 63)
@@ -2313,7 +2313,7 @@ $btnApplyHosts.Add_Click({
 $hostsTab.Controls.Add($btnApplyHosts)
 
 $btnClearHosts = New-Object System.Windows.Forms.Button
-$btnClearHosts.Text = 'Remove hosts block'
+$btnClearHosts.Text = '移除 Hosts 屏蔽'
 $btnClearHosts.Size = New-Object System.Drawing.Size(160, 30)
 $btnClearHosts.Location = New-Object System.Drawing.Point(185, ($y + 10))
 $btnClearHosts.Add_Click({
@@ -2370,7 +2370,7 @@ $tabs.TabPages.Add($hostsTab)
 # Scans Brave component filter lists, displays ##+js(...) rules, and can
 # comment/uncomment rules with a BFO marker after explicit user opt-in.
 $scriptletsTab = New-Object System.Windows.Forms.TabPage
-$scriptletsTab.Text = 'Default Scriptlets (Advanced)'
+$scriptletsTab.Text = '默认脚本（高级）'
 $scriptletsTab.AutoScroll = $true
 $scriptletsTab.BackColor = [System.Drawing.Color]::White
 
@@ -2777,7 +2777,7 @@ $tabs.TabPages.Add($scriptletsTab)
 # Off by default: Brave's user-chosen search engine and startup behavior stay
 # untouched unless the user actively ticks an override.
 $searchTab = New-Object System.Windows.Forms.TabPage
-$searchTab.Text = 'Search & Startup'
+$searchTab.Text = '搜索和启动'
 $searchTab.AutoScroll = $true
 $searchTab.BackColor = [System.Drawing.Color]::White
 
@@ -3119,7 +3119,7 @@ $form.Controls.Add($utilityPanel)
 
 # Export config to JSON
 $btnExport = New-Object System.Windows.Forms.Button
-$btnExport.Text = 'Export config'
+$btnExport.Text = '导出配置'
 $btnExport.Size = New-Object System.Drawing.Size(110, 30)
 $btnExport.Location = New-Object System.Drawing.Point(420, 5)
 $btnExport.Add_Click({
@@ -3172,7 +3172,7 @@ $utilityPanel.Controls.Add($btnExport)
 
 # Import config from JSON
 $btnImport = New-Object System.Windows.Forms.Button
-$btnImport.Text = 'Import config'
+$btnImport.Text = '导入配置'
 $btnImport.Size = New-Object System.Drawing.Size(110, 30)
 $btnImport.Location = New-Object System.Drawing.Point(535, 5)
 $btnImport.Add_Click({
@@ -3260,7 +3260,7 @@ $utilityPanel.Controls.Add($btnImport)
 
 # Verify - read registry, compare to UI selections
 $btnVerify = New-Object System.Windows.Forms.Button
-$btnVerify.Text = 'Verify'
+$btnVerify.Text = '验证'
 $btnVerify.Size = New-Object System.Drawing.Size(80, 30)
 $btnVerify.Location = New-Object System.Drawing.Point(650, 5)
 $btnVerify.Add_Click({
@@ -3348,7 +3348,7 @@ $btnVerify.Add_Click({
 $utilityPanel.Controls.Add($btnVerify)
 
 $btnLoad = New-Object System.Windows.Forms.Button
-$btnLoad.Text = 'Load current state'
+$btnLoad.Text = '加载当前状态'
 $btnLoad.Size = New-Object System.Drawing.Size(145, 30)
 $btnLoad.Location = New-Object System.Drawing.Point(0, 5)
 $btnLoad.Add_Click({
@@ -3470,7 +3470,7 @@ $btnLoad.Add_Click({
 $utilityPanel.Controls.Add($btnLoad)
 
 $btnOpenBrave = New-Object System.Windows.Forms.Button
-$btnOpenBrave.Text = 'Open brave://policy'
+$btnOpenBrave.Text = '打开 brave://policy'
 $btnOpenBrave.Size = New-Object System.Drawing.Size(150, 30)
 $btnOpenBrave.Location = New-Object System.Drawing.Point(155, 5)
 $btnOpenBrave.Add_Click({
@@ -3509,7 +3509,7 @@ $chkBackup.Size = New-Object System.Drawing.Size(270, 20)
 $actionPanel.Controls.Add($chkBackup)
 
 $btnPreview = New-Object System.Windows.Forms.Button
-$btnPreview.Text = 'Preview changes'
+$btnPreview.Text = '预览更改'
 $btnPreview.Size = New-Object System.Drawing.Size(140, 34)
 $btnPreview.Location = New-Object System.Drawing.Point(280, 4)
 $btnPreview.Add_Click({
@@ -3518,7 +3518,7 @@ $btnPreview.Add_Click({
 $actionPanel.Controls.Add($btnPreview)
 
 $btnApply = New-Object System.Windows.Forms.Button
-$btnApply.Text = 'Apply to Brave'
+$btnApply.Text = '应用到 Brave'
 $btnApply.Size = New-Object System.Drawing.Size(150, 34)
 $btnApply.Location = New-Object System.Drawing.Point(430, 4)
 $btnApply.BackColor = [System.Drawing.Color]::FromArgb(37, 99, 63)
@@ -3621,7 +3621,7 @@ $btnApply.Add_Click({
 $actionPanel.Controls.Add($btnApply)
 
 $btnRemoveAll = New-Object System.Windows.Forms.Button
-$btnRemoveAll.Text = 'Full restore / stock'
+$btnRemoveAll.Text = '完全恢复 / 标准'
 $btnRemoveAll.Size = New-Object System.Drawing.Size(170, 34)
 $btnRemoveAll.Location = New-Object System.Drawing.Point(590, 4)
 $btnRemoveAll.BackColor = [System.Drawing.Color]::FromArgb(150, 60, 60)

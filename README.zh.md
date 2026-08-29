@@ -2,43 +2,83 @@
 
 “Brave Free Origin” 是一个 Windows GUI 工具，用来通过企业策略（注册表）把 Brave 精简为类似“Origin” 的本地免费版本，移除 AI、加密钱包、VPN、推广等非必要功能，并提供若干性能/隐私预设。
 
+## 文件说明
+
+- **Brave-Free-Origin.ps1** - 英文版本脚本
+- **Brave-Free-Origin.zh.ps1** - 中文版本脚本（所有 Description 和 UI 标签已翻译）
+- **Brave-Free-Origin.bat** - 英文启动器
+- **Brave-Free-Origin-zh.bat** - 中文启动器
+- **generate-zh.ps1** - 生成中文脚本的工具（用于维护和更新）
+
 ## 快速开始
 
+### 方式 1：使用中文启动器（推荐中文用户）
 1. 将整个文件夹从 ZIP 解压到磁盘（不要在压缩包内运行）。
-2. 双击 `Brave-Free-Origin.bat`（启动器）。不要直接双击 `.ps1` 文件——Windows 会用记事本打开它，GUI 不会出现。
-3. 在出现的 UAC 提示中点击“是”（需要管理员权限，因为工具会写入 `HKLM` 下的企业策略）。
-4. 在 GUI 中点击“Load current state” 查看当前策略状态。
-5. 在顶部选择一个模式（Quick Debloat / Recommended / Origin Mode / Privacy + Boost / Max Performance / Max Privacy / Stock），然后点击 `Preview changes` 预览，最后点击 `Apply to Brave` 应用。应用后请完全关闭并重新打开 Brave。
-6. （推荐）点击 `Verify` 按钮，工具会读取注册表确认策略是否已生效。
+2. 双击 `Brave-Free-Origin-zh.bat`（中文启动器）。
+3. 在出现的 UAC 提示中点击"是"（需要管理员权限）。
+
+### 方式 2：使用英文启动器
+1. 将整个文件夹从 ZIP 解压到磁盘。
+2. 双击 `Brave-Free-Origin.bat`（英文启动器）。
 
 ## 按钮与模式说明（摘要）
 
-- Quick Debloat：最轻量的清理，移除最明显的额外功能。安全。 
-- Recommended：日常推荐设置，兼顾隐私与可用性。 
-- Origin Mode：本地免费实现 Brave 的“Origin”思路。 
-- Privacy + Boost：在 Origin 的基础上启用启动/延迟优化，侧重性能。 
-- Max Performance：最激进的性能优化与 UI 精简。 
-- Max Privacy：严格的隐私锁定（禁用同步、登录、导入等）。
-- Stock / None：取消所有勾选，恢复默认（后点 `Apply to Brave`）。
+| 模式 | 说明 |
+|------|------|
+| 快速精简 | 最轻量的清理，移除最明显的额外功能。安全。 |
+| 推荐 | 日常推荐设置，兼顾隐私与可用性。 |
+| Origin 模式 | 本地免费实现 Brave 的"Origin"思路。 |
+| 隐私 + 加速 | Origin 的基础上启用启动/延迟优化，侧重性能。 |
+| 最高性能 | 最激进的性能优化与 UI 精简。 |
+| 最高隐私 | 严格的隐私锁定（禁用同步、登录等）。 |
+| 标准 / 无 | 取消所有勾选，恢复默认。 |
+
+## 使用步骤
+
+1. **加载当前状态**：点击左上方"加载当前状态"按钮，查看当前的策略配置。
+2. **选择预设**：在顶部选择一个模式。
+3. **调整细节**：（可选）在下方标签中勾选/取消特定的策略。
+4. **预览更改**：点击"预览更改"查看将要应用的具体改动。
+5. **应用**：点击"应用到 Brave"按钮将策略写入注册表。
+6. **重启浏览器**：完全关闭并重新打开 Brave。
+7. **验证**：（推荐）点击"验证"按钮确认策略是否生效。
 
 ## 重要注意事项
 
-- 工具通过写入 `HKLM\Software\Policies\BraveSoftware\Brave` 来设置企业策略，因此 Brave 会显示 “Managed by your organization” 提示，这属于 Chromium 的透明设计，无法在保留策略的同时隐藏。
-- 每次有破坏性操作前都会自动备份（备份目录：`Documents\Brave-Free-Origin-Backups\`）。
-- Hosts 编辑使用标记块，可安全移除。
-- 若反复出现问题，请使用 `Verify` 报告或还原备份。
+- **管理员权限**：工具需要管理员权限来写入 `HKLM\Software\Policies\BraveSoftware\Brave` 下的企业策略。
+- **"Managed by your organization" 提示**：这是 Chromium 浏览器的透明设计，只要有任何机器级策略生效就会显示，无法隐藏。若要移除提示，需要先删除所有策略（点"标准 / 无"然后"应用到 Brave"）。
+- **自动备份**：每次有破坏性操作前都会自动备份到 `Documents\Brave-Free-Origin-Backups\`。
+- **Hosts 编辑**：Hosts 屏蔽列表（DNS 级别）使用标记块，可安全移除，而且不会影响已有的 Hosts 条目。
+- **不要直接双击 .ps1 文件**：Windows 会用记事本打开它，GUI 不会出现。始终使用 `.bat` 启动器。
 
-## 文件列表（摘要）
+## 标签页说明
 
-- `Brave-Free-Origin.bat` ← 启动器（双击此文件）
-- `Brave-Free-Origin.ps1` ← 主脚本（不要直接双击）
-- `README.md` ← 英文说明（本文件为中文翻译）
-- `LICENSE`
-- `images/` ← GUI 截图等资源
+- **Brave 功能 / 隐私 / 搜索等**：各类策略的勾选框，可以单独启用/禁用。
+- **系统（任务 / 服务）**：管理 Brave 的计划任务和 Windows 服务。
+- **Hosts 屏蔽列表**：DNS 级别的阻止列表（可选）。
+- **默认脚本（高级）**：用于管理 Brave 内置的广告拦截脚本规则（高级用户）。
+- **搜索和启动**：配置默认搜索引擎、新标签页和启动行为。
+
+## 常见问题
+
+**Q: 我能否只关闭某些功能而保留其他的？**
+A: 可以。在加载后，各标签页中有单独的勾选框，可以按需启用/禁用。
+
+**Q: 这个工具会修改 Brave 可执行文件吗？**
+A: 不会。工具只写入注册表中的企业策略（HKLM），不会修改可执行文件或签名。
+
+**Q: 如何回到完全默认的 Brave？**
+A: 点击"标准 / 无"，取消所有勾选，然后点击"应用到 Brave"。
+
+**Q: 工具会被杀毒软件标记吗？**
+A: 通常不会。工具只是用 PowerShell 向注册表写入数据，这是企业 IT 的标准操作。如果被标记，可以读源代码审查。
+
+## 技术细节
+
+- 脚本使用 PowerShell 5.0+，对应 Windows 7 SP1 及更新版本。
+- 所有策略遵循 Chromium/Brave 的企业策略规范。
+- 生成器脚本 `generate-zh.ps1` 可用于从英文版本生成中文版本，维护者可自行运行以同步最新版本。
 
 ---
 
-如果你希望我：
-1) 直接把 `Brave-Free-Origin.ps1` 中所有 UI 文本/Description 字段替换为中文，或
-2) 在分支中保留英文并创建一个完整的中文脚本副本（例如 `Brave-Free-Origin.zh.ps1`），或
-3) 只把 GUI 顶部/帮助/README 等文档翻译保留脚本不动——请告诉我偏好。我已经在分支 `tszlznl-zh-localization` 中工作，准备根据你选择执行下一步。
+如需更多帮助或报告问题，请访问项目仓库。

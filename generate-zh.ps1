@@ -108,6 +108,48 @@ $replacer = [System.Text.RegularExpressions.MatchEvaluator]{ param($m)
 
 $result = [System.Text.RegularExpressions.Regex]::Replace($content, "Description='([^']*)'", $replacer)
 
+# 扩展翻译：UI 标签、按钮、菜单项
+$uiMap = @{
+    "= 'Brave Features'" = "= '浏览器功能'"
+    "= 'Autofill / Passwords'" = "= '自动填充 / 密码'"
+    "= 'Search / Suggestions'" = "= '搜索 / 建议'"
+    "= 'Safety / Updates'" = "= '安全 / 更新'"
+    "= 'AI / GenAI'" = "= 'AI / 生成式 AI'"
+    "= 'Web Services / Background'" = "= '网络服务 / 后台'"
+    "= 'Performance / Startup'" = "= '性能 / 启动'"
+    "= 'Privacy / Telemetry'" = "= '隐私 / 遥测'"
+    "'Quick Debloat'" = "'快速精简'"
+    "'Recommended'" = "'推荐'"
+    "'Origin Mode'" = "'Origin 模式'"
+    "'Privacy + Boost'" = "'隐私 + 加速'"
+    "'Max Performance'" = "'最高性能'"
+    "'Max Privacy'" = "'最高隐私'"
+    "'Stock / None'" = "'标准 / 无'"
+    "`$btnPreview.Text = 'Preview changes'" = "`$btnPreview.Text = '预览更改'"
+    "`$btnApply.Text = 'Apply to Brave'" = "`$btnApply.Text = '应用到 Brave'"
+    "`$btnRemoveAll.Text = 'Full restore / stock'" = "`$btnRemoveAll.Text = '完全恢复 / 标准'"
+    "`$btnLoad.Text = 'Load current state'" = "`$btnLoad.Text = '加载当前状态'"
+    "`$btnVerify.Text = 'Verify'" = "`$btnVerify.Text = '验证'"
+    "`$btnExport.Text = 'Export config'" = "`$btnExport.Text = '导出配置'"
+    "`$btnImport.Text = 'Import config'" = "`$btnImport.Text = '导入配置'"
+    "`$btnOpenBrave.Text = 'Open brave://policy'" = "`$btnOpenBrave.Text = '打开 brave://policy'"
+    "`$titleLabel.Text = 'Brave Free Origin'" = "`$titleLabel.Text = 'Brave 免费版本'"
+    "`$channelLabel.Text = 'Target channel:'" = "`$channelLabel.Text = '目标渠道:'"
+    "`$modeIntro.Text = 'Pick a one-click mode, then tweak the tabs below if you want to go deeper.'" = "`$modeIntro.Text = '选择一键模式，然后可在下方标签中进行调整。'"
+    "`$sysTab.Text = 'System (Tasks / Services)'" = "`$sysTab.Text = '系统（任务 / 服务）'"
+    "`$hostsTab.Text = 'Hosts Blocklist (DNS-level)'" = "`$hostsTab.Text = 'Hosts 屏蔽列表（DNS 级别）'"
+    "`$scriptletsTab.Text = 'Default Scriptlets (Advanced)'" = "`$scriptletsTab.Text = '默认脚本（高级）'"
+    "`$searchTab.Text = 'Search & Startup'" = "`$searchTab.Text = '搜索和启动'"
+    "`$btnApplyHosts.Text = 'Apply hosts blocks'" = "`$btnApplyHosts.Text = '应用 Hosts 屏蔽'"
+    "`$btnClearHosts.Text = 'Remove hosts block'" = "`$btnClearHosts.Text = '移除 Hosts 屏蔽'"
+    "'Disable' = 'Disable (0)'" = "'Disable' = '禁用 (0)'"
+    "'Enable' = 'Enable (1)'" = "'Enable' = '启用 (1)'"
+}
+
+foreach ($key in $uiMap.Keys) {
+    $result = $result -replace [regex]::Escape($key), $uiMap[$key]
+}
+
 # 保存为 UTF8
 Set-Content -LiteralPath $outputPath -Value $result -Encoding UTF8
 Write-Output "Wrote $outputPath"
